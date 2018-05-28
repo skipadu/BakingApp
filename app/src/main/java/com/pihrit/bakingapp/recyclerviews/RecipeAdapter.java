@@ -10,9 +10,12 @@ import android.view.ViewGroup;
 import com.pihrit.bakingapp.R;
 import com.pihrit.bakingapp.model.Recipe;
 
+import java.util.ArrayList;
+
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapterViewHolder> {
     private final Context mContext;
     private final RecipeItemClickListener mRecipeClickListener;
+    private ArrayList<Recipe> mRecipes;
 
     public RecipeAdapter(Context context, RecipeItemClickListener clickListener) {
         this.mContext = context;
@@ -29,20 +32,22 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapterViewHolder>
 
     @Override
     public void onBindViewHolder(@NonNull RecipeAdapterViewHolder holder, int position) {
-        // TODO: get item from the list
-        holder.mRecipeNameTextView.setText("Recipe name");
+        Recipe recipe = getRecipeAt(position);
+
+        holder.mRecipeNameTextView.setText(recipe.getName());
+        // TODO: Show also other information?
     }
 
     @Override
     public int getItemCount() {
-        // TODO: get count from the list
-        return 30;
+        return mRecipes == null ? 0 : mRecipes.size();
     }
 
-    public Recipe getRecipeAt(int itemIndex) {
-        // TODO: return recipe from list at the given position
-        Recipe testRecipe = new Recipe();
-        testRecipe.setName("Recipe 01");
-        return testRecipe;
+    public Recipe getRecipeAt(int index) {
+        return mRecipes.get(index);
+    }
+
+    public void setRecipes(ArrayList<Recipe> recipes) {
+        this.mRecipes = recipes;
     }
 }
