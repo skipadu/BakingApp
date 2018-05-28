@@ -6,11 +6,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.pihrit.bakingapp.recyclerviews.RecipeAdapter;
+import com.pihrit.bakingapp.recyclerviews.RecipeItemClickListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RecipeItemClickListener {
 
     // TODO recyclerview, adapter, layoutmanager
 
@@ -31,7 +32,12 @@ public class MainActivity extends AppCompatActivity {
         // TODO: vertical?
 
         mRecipesRecyclerView.setLayoutManager(lm);
-        mRecipeAdapter = new RecipeAdapter(this);
+        mRecipeAdapter = new RecipeAdapter(this, this);
         mRecipesRecyclerView.setAdapter(mRecipeAdapter);
+    }
+
+    @Override
+    public void onRecipeItemClick(int itemIndex) {
+        // TODO: open recipe step selection screen based on clicked item
     }
 }

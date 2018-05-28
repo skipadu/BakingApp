@@ -11,9 +11,11 @@ import com.pihrit.bakingapp.R;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapterViewHolder> {
     private final Context mContext;
+    private final RecipeItemClickListener mRecipeClickListener;
 
-    public RecipeAdapter(Context context) {
+    public RecipeAdapter(Context context, RecipeItemClickListener clickListener) {
         this.mContext = context;
+        this.mRecipeClickListener = clickListener;
     }
 
     @NonNull
@@ -21,7 +23,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapterViewHolder>
     public RecipeAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(mContext).inflate(R.layout.item_recipe, parent, false);
         v.setFocusable(true);
-        return new RecipeAdapterViewHolder(v);
+        return new RecipeAdapterViewHolder(v, mRecipeClickListener);
     }
 
     @Override
