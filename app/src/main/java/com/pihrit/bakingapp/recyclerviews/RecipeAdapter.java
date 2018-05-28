@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.pihrit.bakingapp.R;
+import com.pihrit.bakingapp.model.Recipe;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapterViewHolder> {
     private final Context mContext;
@@ -36,5 +37,12 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapterViewHolder>
     public int getItemCount() {
         // TODO: get count from the list
         return 30;
+    }
+
+    public Recipe getRecipeAt(int itemIndex) {
+        // TODO: return recipe from list at the given position
+        Recipe testRecipe = new Recipe();
+        testRecipe.setName("Recipe 01");
+        return testRecipe;
     }
 }

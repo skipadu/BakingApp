@@ -1,11 +1,16 @@
 package com.pihrit.bakingapp.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Recipe {
+public class Recipe implements Parcelable {
+    public static final String PARCELABLE_ID = "recipe";
 
+    // No real use; Seems to be always empty
     @SerializedName("image")
     private String image;
 
@@ -23,6 +28,25 @@ public class Recipe {
 
     @SerializedName("steps")
     private List<StepsItem> steps;
+
+    protected Recipe(Parcel in) {
+        image = in.readString();
+        servings = in.readInt();
+        name = in.readString();
+        id = in.readInt();
+    }
+
+    public static final Creator<Recipe> CREATOR = new Creator<Recipe>() {
+        @Override
+        public Recipe createFromParcel(Parcel in) {
+            return new Recipe(in);
+        }
+
+        @Override
+        public Recipe[] newArray(int size) {
+            return new Recipe[size];
+        }
+    };
 
     public void setImage(String image) {
         this.image = image;
@@ -83,5 +107,18 @@ public class Recipe {
                         ",id = '" + id + '\'' +
                         ",steps = '" + steps + '\'' +
                         "}";
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(image);
+        parcel.writeInt(servings);
+        parcel.writeString(name);
+        parcel.writeInt(id);
     }
 }

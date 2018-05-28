@@ -1,10 +1,12 @@
 package com.pihrit.bakingapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.pihrit.bakingapp.model.Recipe;
 import com.pihrit.bakingapp.recyclerviews.RecipeAdapter;
 import com.pihrit.bakingapp.recyclerviews.RecipeItemClickListener;
 
@@ -12,8 +14,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements RecipeItemClickListener {
-
-    // TODO recyclerview, adapter, layoutmanager
 
     @BindView(R.id.rv_recipes)
     RecyclerView mRecipesRecyclerView;
@@ -29,15 +29,18 @@ public class MainActivity extends AppCompatActivity implements RecipeItemClickLi
         mRecipesRecyclerView.setHasFixedSize(true);
 
         RecyclerView.LayoutManager lm = new LinearLayoutManager(this);
-        // TODO: vertical?
-
         mRecipesRecyclerView.setLayoutManager(lm);
+
         mRecipeAdapter = new RecipeAdapter(this, this);
         mRecipesRecyclerView.setAdapter(mRecipeAdapter);
     }
 
     @Override
     public void onRecipeItemClick(int itemIndex) {
-        // TODO: open recipe step selection screen based on clicked item
+        Recipe clickedRecipe = mRecipeAdapter.getRecipeAt(itemIndex);
+
+        Intent recipeStepSelectIntent = new Intent(MainActivity.this, RecipeStepSelectActivity.class);
+        recipeStepSelectIntent.putExtra(Recipe.PARCELABLE_ID, clickedRecipe);
+        startActivity(recipeStepSelectIntent);
     }
 }
