@@ -4,4 +4,5 @@
     <dimen name="border_radius">4dp</dimen>
     <dimen name="recipe_step_height">120dp</dimen>
     <dimen name="default_margin">8dp</dimen>
+    <dimen name="recipe_height">200dp</dimen>
 </resources>
