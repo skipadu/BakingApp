@@ -15,7 +15,7 @@
         android:layout_marginTop="@dimen/default_margin"
         android:background="@drawable/border"
         android:gravity="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textSize="@dimen/text_big"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

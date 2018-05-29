@@ -14,26 +14,26 @@ import java.util.ArrayList;
 
 public class RecipeStepAdapter extends RecyclerView.Adapter<RecipeStepViewHolder> {
     private final Context mContext;
+    private final RecipeStepItemClickListener mRecipeStepClickListener;
     private ArrayList<StepsItem> mRecipeSteps;
 
-    public RecipeStepAdapter(Context mContext) {
-        this.mContext = mContext;
-        // TODO: clickListener
+    public RecipeStepAdapter(Context context, RecipeStepItemClickListener clickListener) {
+        this.mContext = context;
+        this.mRecipeStepClickListener = clickListener;
     }
-    // TODO: recipe steps
 
     @NonNull
     @Override
     public RecipeStepViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(mContext).inflate(R.layout.item_recipe_step, parent, false);
         v.setFocusable(true);
-        return new RecipeStepViewHolder(v);
+        return new RecipeStepViewHolder(v, mRecipeStepClickListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecipeStepViewHolder holder, int position) {
         StepsItem stepsItem = getStepsItemAt(position);
-        holder.mRecipeStepDescriptionTextView.setText(stepsItem.getDescription());
+        holder.mRecipeStepDescriptionTextView.setText(stepsItem.getShortDescription());
     }
 
     @Override
