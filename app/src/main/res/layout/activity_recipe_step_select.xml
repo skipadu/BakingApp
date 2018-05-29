@@ -1,13 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".RecipeStepSelectActivity">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_recipe_steps"
+    <LinearLayout
+        android:id="@+id/linearlayout_recipe_steps"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-</android.support.constraint.ConstraintLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/recipe_step_height"
+            android:layout_marginBottom="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/recipe_step_ingredients_margin"
+            android:layout_marginStart="@dimen/recipe_step_ingredients_margin"
+            android:layout_marginTop="@dimen/default_margin"
+            android:background="@drawable/border"
+            android:gravity="center"
+            android:text="@string/ingredients"
+            android:textSize="@dimen/text_big"
+            app:layout_constraintBottom_toTopOf="@+id/rv_recipe_steps"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_recipe_steps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"></android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+
+
+</android.support.v4.widget.NestedScrollView>

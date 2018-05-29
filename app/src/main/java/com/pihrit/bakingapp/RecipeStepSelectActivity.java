@@ -38,6 +38,10 @@ public class RecipeStepSelectActivity extends AppCompatActivity implements Recip
         RecyclerView.LayoutManager lm = new LinearLayoutManager(this);
         mRecipeStepsRecyclerView.setLayoutManager(lm);
 
+//        mRecipeStepsRecyclerView.setNestedScrollingEnabled(false);
+
+        mRecipeStepsRecyclerView.setFocusable(false);
+
         mRecipeStepAdapter = new RecipeStepAdapter(this, this);
         mRecipeStepsRecyclerView.setAdapter(mRecipeStepAdapter);
 

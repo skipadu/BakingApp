@@ -6,4 +6,5 @@
     <dimen name="default_margin">8dp</dimen>
     <dimen name="recipe_height">200dp</dimen>
     <dimen name="text_big">18sp</dimen>
+    <dimen name="recipe_step_ingredients_margin">16dp</dimen>
 </resources>
