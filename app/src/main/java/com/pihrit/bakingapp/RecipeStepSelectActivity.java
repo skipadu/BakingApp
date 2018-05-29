@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class RecipeStepSelectActivity extends AppCompatActivity implements RecipeStepItemClickListener {
     // TODO: Own item for the ingredients "step"
@@ -62,5 +63,10 @@ public class RecipeStepSelectActivity extends AppCompatActivity implements Recip
         StepsItem clickedStep = mRecipeStepAdapter.getStepsItemAt(itemIndex);
 
         Log.v(TAG, "Clicked step: id=" + itemIndex + " - " + clickedStep.getDescription());
+    }
+
+    @OnClick(R.id.tv_recipe_step_ingredients)
+    public void onIngredientsStepClick() {
+        Log.v(TAG, "Clicked ingredients!");
     }
 }
