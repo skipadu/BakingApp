@@ -22,6 +22,18 @@ public class RecipeStepViewActivity extends AppCompatActivity {
         fragmentManager.beginTransaction()
                 .add(R.id.media_player_container, mediaPlayerFragment)
                 .commit();
+
+        StepInstructionsFragment instructionsFragment = new StepInstructionsFragment();
+        // TODO: add needed data for the fragment
+
+        fragmentManager.beginTransaction()
+                .add(R.id.step_instructions_container, instructionsFragment)
+                .commit();
+
+        NavigationFragment navigationFragment = new NavigationFragment();
+        fragmentManager.beginTransaction()
+                .add(R.id.navigation_buttons_container, navigationFragment)
+                .commit();
     }
 
 
