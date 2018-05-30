@@ -76,6 +76,18 @@ public class MediaPlayerFragment extends Fragment implements Player.EventListene
         }
     }
 
+    private void releasePlayer() {
+        mExoPlayer.stop();
+        mExoPlayer.release();
+        mExoPlayer = null;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        releasePlayer();
+    }
+
     @Override
     public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
 
