@@ -12,30 +12,32 @@ public class RecipeStepViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_step_view);
 
-        // TODO: Different layout for the tablet
+        // Create new fragments only if no previously saved state
+        if (savedInstanceState == null) {
+            // TODO: Different layout for the tablet
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentManager fragmentManager = getSupportFragmentManager();
 
-        MediaPlayerFragment mediaPlayerFragment = new MediaPlayerFragment();
-        // TODO: add needed data for the fragment
+            MediaPlayerFragment mediaPlayerFragment = new MediaPlayerFragment();
+            // TODO: add needed data for the fragment
 
-        fragmentManager.beginTransaction()
-                .add(R.id.media_player_container, mediaPlayerFragment)
-                .commit();
+            fragmentManager.beginTransaction()
+                    .add(R.id.media_player_container, mediaPlayerFragment)
+                    .commit();
 
-        StepInstructionsFragment instructionsFragment = new StepInstructionsFragment();
-        // TODO: add needed data for the fragment
+            StepInstructionsFragment instructionsFragment = new StepInstructionsFragment();
+            // TODO: add needed data for the fragment
 
-        fragmentManager.beginTransaction()
-                .add(R.id.step_instructions_container, instructionsFragment)
-                .commit();
+            fragmentManager.beginTransaction()
+                    .add(R.id.step_instructions_container, instructionsFragment)
+                    .commit();
 
-        NavigationFragment navigationFragment = new NavigationFragment();
-        fragmentManager.beginTransaction()
-                .add(R.id.navigation_buttons_container, navigationFragment)
-                .commit();
+            NavigationFragment navigationFragment = new NavigationFragment();
+            fragmentManager.beginTransaction()
+                    .add(R.id.navigation_buttons_container, navigationFragment)
+                    .commit();
+        }
     }
-
 
     // Little hack to keep the data still in place when going back to previous activity
     @Override
