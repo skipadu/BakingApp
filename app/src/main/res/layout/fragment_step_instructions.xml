@@ -5,6 +5,13 @@
     android:layout_height="match_parent"
     tools:context=".StepInstructionsFragment">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_ingredients"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
+
     <TextView
         android:id="@+id/tv_frag_instructions_step"
         android:layout_width="match_parent"

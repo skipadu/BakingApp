@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.pihrit.bakingapp.model.IngredientsItem;
 import com.pihrit.bakingapp.model.StepsItem;
@@ -35,19 +36,20 @@ public class RecipeStepViewActivity extends AppCompatActivity {
 
             FragmentManager fragmentManager = getSupportFragmentManager();
 
-            // No possible media to show
-            if (mIngredients != null) {
-                if (mStepsItem != null && (mStepsItem.getVideoURL().length() > 0 || mStepsItem.getThumbnailURL().length() > 0)) {
-                    Log.v("ASD", "create mediaplayer fragment");
-                    MediaPlayerFragment mediaPlayerFragment = new MediaPlayerFragment();
-                    mediaPlayerFragment.setVideoURL(mStepsItem.getVideoURL());
-                    mediaPlayerFragment.setmThumbnailURL(mStepsItem.getThumbnailURL());
+            if (mIngredients == null && mStepsItem != null && (mStepsItem.getVideoURL().length() > 0 || mStepsItem.getThumbnailURL().length() > 0)) {
+                Log.v("ASD", "create mediaplayer fragment");
+                MediaPlayerFragment mediaPlayerFragment = new MediaPlayerFragment();
+                mediaPlayerFragment.setVideoURL(mStepsItem.getVideoURL());
+                mediaPlayerFragment.setmThumbnailURL(mStepsItem.getThumbnailURL());
 
-                    fragmentManager.beginTransaction()
-                            .add(R.id.media_player_container, mediaPlayerFragment)
-                            .commit();
-                }
+                fragmentManager.beginTransaction()
+                        .add(R.id.media_player_container, mediaPlayerFragment)
+                        .commit();
+            } else {
+                View v = findViewById(R.id.media_player_container);
+                v.setVisibility(View.GONE);
             }
+
 
             StepInstructionsFragment instructionsFragment = new StepInstructionsFragment();
             if (mStepsItem != null) {
@@ -67,6 +69,7 @@ public class RecipeStepViewActivity extends AppCompatActivity {
                     .add(R.id.navigation_buttons_container, navigationFragment)
                     .commit();
         }
+
     }
 
     // Little hack to keep the data still in place when going back to previous activity
