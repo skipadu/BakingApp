@@ -4,13 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
+import com.pihrit.bakingapp.model.IngredientsItem;
 import com.pihrit.bakingapp.model.StepsItem;
+
+import java.util.ArrayList;
 
 public class RecipeStepViewActivity extends AppCompatActivity {
     private StepsItem mStepsItem;
-    private boolean mIsIngredients;
+    private ArrayList<IngredientsItem> mIngredients;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,8 +25,8 @@ public class RecipeStepViewActivity extends AppCompatActivity {
         if (callerIntent.hasExtra(StepsItem.PARCELABLE_ID)) {
             mStepsItem = callerIntent.getExtras().getParcelable(StepsItem.PARCELABLE_ID);
         }
-        if (callerIntent.hasExtra(RecipeStepSelectActivity.INGREDIENTS_EXTRA)) {
-            mIsIngredients = callerIntent.getExtras().getBoolean(RecipeStepSelectActivity.INGREDIENTS_EXTRA);
+        if (callerIntent.hasExtra(IngredientsItem.PARCELABLE_ID)) {
+            mIngredients = callerIntent.getExtras().getParcelableArrayList(IngredientsItem.PARCELABLE_ID);
         }
 
         // Create new fragments only if no previously saved state
@@ -31,23 +35,33 @@ public class RecipeStepViewActivity extends AppCompatActivity {
 
             FragmentManager fragmentManager = getSupportFragmentManager();
 
-            MediaPlayerFragment mediaPlayerFragment = new MediaPlayerFragment();
-            mediaPlayerFragment.setVideoURL(mStepsItem.getVideoURL());
-            mediaPlayerFragment.setmThumbnailURL(mStepsItem.getThumbnailURL());
+            // No possible media to show
+            if (mIngredients != null) {
+                if (mStepsItem != null && (mStepsItem.getVideoURL().length() > 0 || mStepsItem.getThumbnailURL().length() > 0)) {
+                    Log.v("ASD", "create mediaplayer fragment");
+                    MediaPlayerFragment mediaPlayerFragment = new MediaPlayerFragment();
+                    mediaPlayerFragment.setVideoURL(mStepsItem.getVideoURL());
+                    mediaPlayerFragment.setmThumbnailURL(mStepsItem.getThumbnailURL());
 
-            fragmentManager.beginTransaction()
-                    .add(R.id.media_player_container, mediaPlayerFragment)
-                    .commit();
+                    fragmentManager.beginTransaction()
+                            .add(R.id.media_player_container, mediaPlayerFragment)
+                            .commit();
+                }
+            }
 
             StepInstructionsFragment instructionsFragment = new StepInstructionsFragment();
-            instructionsFragment.setInstructions(mStepsItem.getDescription());
+            if (mStepsItem != null) {
+                instructionsFragment.setInstructions(mStepsItem.getDescription());
+            } else if (mIngredients != null) {
+                instructionsFragment.setIngredients(mIngredients);
+            }
 
             fragmentManager.beginTransaction()
                     .add(R.id.step_instructions_container, instructionsFragment)
                     .commit();
 
             NavigationFragment navigationFragment = new NavigationFragment();
-            navigationFragment.setStepIndex(mIsIngredients ? RecipeStepSelectActivity.INGREDIENTS_INDEX : mStepsItem.getId());
+            navigationFragment.setStepIndex(mIngredients != null ? RecipeStepSelectActivity.INGREDIENTS_INDEX : mStepsItem.getId());
 
             fragmentManager.beginTransaction()
                     .add(R.id.navigation_buttons_container, navigationFragment)

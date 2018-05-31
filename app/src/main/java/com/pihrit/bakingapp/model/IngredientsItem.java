@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 public class IngredientsItem implements Parcelable {
+    public static final String PARCELABLE_ID = "ingredients";
 
     @SerializedName("quantity")
     private float quantity;

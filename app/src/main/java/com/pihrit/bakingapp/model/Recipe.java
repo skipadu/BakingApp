@@ -79,7 +79,7 @@ public class Recipe implements Parcelable {
         this.ingredients = ingredients;
     }
 
-    public List<IngredientsItem> getIngredients() {
+    public ArrayList<IngredientsItem> getIngredients() {
         return ingredients;
     }
 

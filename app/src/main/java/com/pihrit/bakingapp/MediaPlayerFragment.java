@@ -63,7 +63,7 @@ public class MediaPlayerFragment extends Fragment implements Player.EventListene
         Uri mediaUri = null;
         if (mVideoURL != null && mVideoURL.length() > 0) {
             mediaUri = Uri.parse(mVideoURL);
-        } else if (mThumbnailURL != null) {
+        } else if (mThumbnailURL != null && mThumbnailURL.length() > 0) {
             mediaUri = Uri.parse(mThumbnailURL);
         }
 
@@ -85,9 +85,11 @@ public class MediaPlayerFragment extends Fragment implements Player.EventListene
     }
 
     private void releasePlayer() {
-        mExoPlayer.stop();
-        mExoPlayer.release();
-        mExoPlayer = null;
+        if (mExoPlayer != null) {
+            mExoPlayer.stop();
+            mExoPlayer.release();
+            mExoPlayer = null;
+        }
     }
 
     @Override

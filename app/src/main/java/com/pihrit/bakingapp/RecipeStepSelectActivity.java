@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import com.pihrit.bakingapp.model.IngredientsItem;
 import com.pihrit.bakingapp.model.Recipe;
 import com.pihrit.bakingapp.model.StepsItem;
 import com.pihrit.bakingapp.recyclerviews.RecipeStepAdapter;
@@ -21,14 +22,12 @@ import butterknife.OnClick;
 public class RecipeStepSelectActivity extends AppCompatActivity implements RecipeStepItemClickListener {
 
     public static final int INGREDIENTS_INDEX = -10;
-    public static final String INGREDIENTS_EXTRA = "ingredients";
 
     @BindView(R.id.rv_recipe_steps)
     RecyclerView mRecipeStepsRecyclerView;
     private RecipeStepAdapter mRecipeStepAdapter;
 
     private Recipe mRecipe;
-    private ArrayList<StepsItem> mStepItems;
 
     private static final String TAG = RecipeStepSelectActivity.class.getSimpleName();
 
@@ -56,6 +55,7 @@ public class RecipeStepSelectActivity extends AppCompatActivity implements Recip
             mRecipe = callerIntent.getExtras().getParcelable(Recipe.PARCELABLE_ID);
         }
         // TODO: else, we are coming from the RecipeStepViewActivity
+        //
         if (savedInstanceState != null) {
             mRecipe = savedInstanceState.getParcelable(Recipe.PARCELABLE_ID);
             Log.v(TAG, "onCreate() trying to get from saved state");
@@ -85,11 +85,9 @@ public class RecipeStepSelectActivity extends AppCompatActivity implements Recip
 
     @OnClick(R.id.tv_recipe_step_ingredients)
     public void onIngredientsStepClick() {
-        Log.v(TAG, "Clicked ingredients!");
-        // TODO: open "recipe step" activity with ingredients
-
         Intent recipeStepViewIntent = new Intent(RecipeStepSelectActivity.this, RecipeStepViewActivity.class);
-        recipeStepViewIntent.putExtra(INGREDIENTS_EXTRA, true);
+
+        recipeStepViewIntent.putParcelableArrayListExtra(IngredientsItem.PARCELABLE_ID, mRecipe.getIngredients());
 
         startActivity(recipeStepViewIntent);
     }
