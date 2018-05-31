@@ -19,7 +19,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class RecipeStepSelectActivity extends AppCompatActivity implements RecipeStepItemClickListener {
-    // TODO: Own item for the ingredients "step"
+
+    public static final int INGREDIENTS_INDEX = -10;
+    public static final String INGREDIENTS_EXTRA = "ingredients";
 
     @BindView(R.id.rv_recipe_steps)
     RecyclerView mRecipeStepsRecyclerView;
@@ -51,11 +53,7 @@ public class RecipeStepSelectActivity extends AppCompatActivity implements Recip
 
         Intent callerIntent = getIntent();
         if (callerIntent.hasExtra(Recipe.PARCELABLE_ID)) {
-            Recipe recipe = callerIntent.getExtras().getParcelable(Recipe.PARCELABLE_ID);
-
-            if (recipe != null) {
-                mRecipe = recipe;
-            }
+            mRecipe = callerIntent.getExtras().getParcelable(Recipe.PARCELABLE_ID);
         }
         // TODO: else, we are coming from the RecipeStepViewActivity
         if (savedInstanceState != null) {
@@ -79,10 +77,9 @@ public class RecipeStepSelectActivity extends AppCompatActivity implements Recip
     public void onRecipeStepItemClick(int itemIndex) {
         StepsItem clickedStep = mRecipeStepAdapter.getStepsItemAt(itemIndex);
 
-        Log.v(TAG, "Clicked step: id=" + itemIndex + " - " + clickedStep.getDescription());
-        // TODO: open "recipe step" activity with selected recipe step
-
         Intent recipeStepViewIntent = new Intent(RecipeStepSelectActivity.this, RecipeStepViewActivity.class);
+        recipeStepViewIntent.putExtra(StepsItem.PARCELABLE_ID, clickedStep);
+
         startActivity(recipeStepViewIntent);
     }
 
@@ -92,6 +89,8 @@ public class RecipeStepSelectActivity extends AppCompatActivity implements Recip
         // TODO: open "recipe step" activity with ingredients
 
         Intent recipeStepViewIntent = new Intent(RecipeStepSelectActivity.this, RecipeStepViewActivity.class);
+        recipeStepViewIntent.putExtra(INGREDIENTS_EXTRA, true);
+
         startActivity(recipeStepViewIntent);
     }
 

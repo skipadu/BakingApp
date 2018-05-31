@@ -37,6 +37,10 @@ public class MediaPlayerFragment extends Fragment implements Player.EventListene
     private SimpleExoPlayer mExoPlayer;
     @BindView(R.id.playerView)
     public PlayerView mPlayerView;
+    private String mVideoURL;
+    private String mThumbnailURL;
+
+    private static String TAG = MediaPlayerFragment.class.getSimpleName();
 
 
     public MediaPlayerFragment() {
@@ -56,13 +60,17 @@ public class MediaPlayerFragment extends Fragment implements Player.EventListene
     }
 
     private void initializePlayer() {
-        // FIXME: test Uri
-        Uri mediaUri = Uri.parse("https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd9a6_2-mix-sugar-crackers-creampie/2-mix-sugar-crackers-creampie.mp4");
-        //
-        if (mExoPlayer == null) {
+        Uri mediaUri = null;
+        if (mVideoURL != null && mVideoURL.length() > 0) {
+            mediaUri = Uri.parse(mVideoURL);
+        } else if (mThumbnailURL != null) {
+            mediaUri = Uri.parse(mThumbnailURL);
+        }
+
+        if (mExoPlayer == null && mediaUri != null) {
             TrackSelector trackSelector = new DefaultTrackSelector();
             LoadControl loadControl = new DefaultLoadControl();
-//            mExoPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), trackSelector, loadControl);
+
 
             RenderersFactory renderersFactory = new DefaultRenderersFactory(getActivity());
             mExoPlayer = ExoPlayerFactory.newSimpleInstance(renderersFactory, trackSelector, loadControl);
@@ -136,5 +144,13 @@ public class MediaPlayerFragment extends Fragment implements Player.EventListene
     @Override
     public void onSeekProcessed() {
 
+    }
+
+    public void setVideoURL(String videoURL) {
+        this.mVideoURL = videoURL;
+    }
+
+    public void setmThumbnailURL(String thumbnailURL) {
+        this.mThumbnailURL = thumbnailURL;
     }
 }

@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class StepsItem implements Parcelable {
 
+    public static final String PARCELABLE_ID = "steps-item";
     @SerializedName("videoURL")
     private String videoURL;
 

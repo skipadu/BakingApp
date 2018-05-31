@@ -6,7 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+// TODO: Actually navigate to previous & next steps
 public class NavigationFragment extends Fragment {
+
+    private int mStepIndex;
 
     public NavigationFragment() {
         // Required empty public constructor
@@ -18,4 +21,7 @@ public class NavigationFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_navigation, container, false);
     }
 
+    public void setStepIndex(int stepIndex) {
+        this.mStepIndex = stepIndex;
+    }
 }

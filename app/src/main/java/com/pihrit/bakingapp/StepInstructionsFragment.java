@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 
 public class StepInstructionsFragment extends Fragment {
 
+    private String mInstructions;
+
     public StepInstructionsFragment() {
         // Required empty public constructor
     }
@@ -18,4 +20,7 @@ public class StepInstructionsFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_step_instructions, container, false);
     }
 
+    public void setInstructions(String instructions) {
+        this.mInstructions = instructions;
+    }
 }
