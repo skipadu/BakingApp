@@ -15,16 +15,14 @@
         android:id="@+id/step_instructions_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin"
         app:layout_constraintBottom_toTopOf="@+id/navigation_buttons_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/media_player_container"></FrameLayout>
 
-    <!-- TODO: Navigation fragment -->
     <FrameLayout
         android:id="@+id/navigation_buttons_container"
         android:layout_width="match_parent"
