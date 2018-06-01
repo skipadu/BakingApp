@@ -35,7 +35,7 @@ public class RecipeStepViewActivity extends AppCompatActivity {
 
             FragmentManager fragmentManager = getSupportFragmentManager();
 
-            if (mIngredients == null && mStepsItem != null && (mStepsItem.getVideoURL().length() > 0 || mStepsItem.getThumbnailURL().length() > 0)) {
+            if (isMediaAvailableToShow()) {
                 MediaPlayerFragment mediaPlayerFragment = new MediaPlayerFragment();
                 mediaPlayerFragment.setVideoURL(mStepsItem.getVideoURL());
                 mediaPlayerFragment.setmThumbnailURL(mStepsItem.getThumbnailURL());
@@ -44,8 +44,7 @@ public class RecipeStepViewActivity extends AppCompatActivity {
                         .add(R.id.media_player_container, mediaPlayerFragment)
                         .commit();
             } else {
-                View v = findViewById(R.id.media_player_container);
-                v.setVisibility(View.GONE);
+                hideMediaPlayer();
             }
 
 
@@ -74,6 +73,19 @@ public class RecipeStepViewActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(getString(R.string.ingredients));
         }
 
+        if (!isMediaAvailableToShow()) {
+            hideMediaPlayer();
+        }
+
+    }
+
+    private boolean isMediaAvailableToShow() {
+        return mIngredients == null && mStepsItem != null && (mStepsItem.getVideoURL().length() > 0 || mStepsItem.getThumbnailURL().length() > 0);
+    }
+
+    private void hideMediaPlayer() {
+        View v = findViewById(R.id.media_player_container);
+        v.setVisibility(View.GONE);
     }
 
     // Little hack to keep the data still in place when going back to previous activity
