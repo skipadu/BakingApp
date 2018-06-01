@@ -58,7 +58,6 @@ public class RecipeStepSelectActivity extends AppCompatActivity implements Recip
         //
         if (savedInstanceState != null) {
             mRecipe = savedInstanceState.getParcelable(Recipe.PARCELABLE_ID);
-            Log.v(TAG, "onCreate() trying to get from saved state");
         }
 
         refreshAdapter();
@@ -96,7 +95,6 @@ public class RecipeStepSelectActivity extends AppCompatActivity implements Recip
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable(Recipe.PARCELABLE_ID, mRecipe);
-        Log.v(TAG, "Save instance state");
     }
 
     @Override
@@ -104,7 +102,6 @@ public class RecipeStepSelectActivity extends AppCompatActivity implements Recip
         super.onRestoreInstanceState(savedInstanceState);
         mRecipe = savedInstanceState.getParcelable(Recipe.PARCELABLE_ID);
         refreshAdapter();
-        Log.v(TAG, "Restore instance state");
     }
 
 }
