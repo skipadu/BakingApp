@@ -7,13 +7,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-import com.pihrit.bakingapp.model.IngredientsItem;
 import com.pihrit.bakingapp.model.Recipe;
 import com.pihrit.bakingapp.model.StepsItem;
 import com.pihrit.bakingapp.recyclerviews.RecipeStepAdapter;
 import com.pihrit.bakingapp.recyclerviews.RecipeStepItemClickListener;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,14 +19,14 @@ import butterknife.OnClick;
 public class RecipeStepSelectActivity extends AppCompatActivity implements RecipeStepItemClickListener {
 
     public static final int INGREDIENTS_INDEX = -10;
+    public static final String EXTRA_RECIPE_STEP_INDEX = "recipe-position";
+    private static final String TAG = RecipeStepSelectActivity.class.getSimpleName();
 
     @BindView(R.id.rv_recipe_steps)
     RecyclerView mRecipeStepsRecyclerView;
     private RecipeStepAdapter mRecipeStepAdapter;
 
     private Recipe mRecipe;
-
-    private static final String TAG = RecipeStepSelectActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +76,9 @@ public class RecipeStepSelectActivity extends AppCompatActivity implements Recip
         StepsItem clickedStep = mRecipeStepAdapter.getStepsItemAt(itemIndex);
 
         Intent recipeStepViewIntent = new Intent(RecipeStepSelectActivity.this, RecipeStepViewActivity.class);
-        recipeStepViewIntent.putExtra(StepsItem.PARCELABLE_ID, clickedStep);
+        //recipeStepViewIntent.putExtra(StepsItem.PARCELABLE_ID, clickedStep);
+        recipeStepViewIntent.putExtra(Recipe.PARCELABLE_ID, mRecipe);
+        recipeStepViewIntent.putExtra(EXTRA_RECIPE_STEP_INDEX, itemIndex);
 
         startActivity(recipeStepViewIntent);
     }
@@ -87,8 +86,9 @@ public class RecipeStepSelectActivity extends AppCompatActivity implements Recip
     @OnClick(R.id.tv_recipe_step_ingredients)
     public void onIngredientsStepClick() {
         Intent recipeStepViewIntent = new Intent(RecipeStepSelectActivity.this, RecipeStepViewActivity.class);
-
-        recipeStepViewIntent.putParcelableArrayListExtra(IngredientsItem.PARCELABLE_ID, mRecipe.getIngredients());
+//        recipeStepViewIntent.putParcelableArrayListExtra(IngredientsItem.PARCELABLE_ID, mRecipe.getIngredients());
+        recipeStepViewIntent.putExtra(Recipe.PARCELABLE_ID, mRecipe);
+        recipeStepViewIntent.putExtra(EXTRA_RECIPE_STEP_INDEX, INGREDIENTS_INDEX);
 
         startActivity(recipeStepViewIntent);
     }

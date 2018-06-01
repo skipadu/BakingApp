@@ -21,6 +21,7 @@ public class NavigationFragment extends Fragment {
     public Button nextButton;
 
     private int mStepIndex;
+    private int mLastStepIndex;
 
     public NavigationFragment() {
         // Required empty public constructor
@@ -40,13 +41,29 @@ public class NavigationFragment extends Fragment {
 
     @OnClick(R.id.btn_next)
     public void goToNextIfPossible() {
-        Log.v("TEST", "Trying to show next view");
-        // TODO: if last, go back to recipe selection?
+        int newIndex = mStepIndex + 1;
+        if (newIndex > mLastStepIndex) {
+            Log.v("ASD", "All steps shown, go back to recipe selection");
+        }
+
+        if (getActivity() instanceof RecipeStepViewActivity) {
+            ((RecipeStepViewActivity) getActivity()).goToRecipeStepByIndex(newIndex);
+        }
     }
 
     @OnClick(R.id.btn_previous)
     public void goToPreviousIfPossible() {
-        Log.v("TEST", "Trying to show previous view");
-        // TODO: if first, then go to recipe selection?
+        int newIndex = mStepIndex - 1;
+        if (newIndex <= RecipeStepSelectActivity.INGREDIENTS_INDEX) {
+            Log.v("ASD", "Was in ingredients, go back to recipe step selection.");
+        }
+
+        if (getActivity() instanceof RecipeStepViewActivity) {
+            ((RecipeStepViewActivity) getActivity()).goToRecipeStepByIndex(newIndex);
+        }
+    }
+
+    public void setLastStepIndex(int lastStepIndex) {
+        this.mLastStepIndex = lastStepIndex;
     }
 }
