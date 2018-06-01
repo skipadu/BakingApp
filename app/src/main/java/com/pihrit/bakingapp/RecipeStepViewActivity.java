@@ -37,7 +37,6 @@ public class RecipeStepViewActivity extends AppCompatActivity {
             FragmentManager fragmentManager = getSupportFragmentManager();
 
             if (mIngredients == null && mStepsItem != null && (mStepsItem.getVideoURL().length() > 0 || mStepsItem.getThumbnailURL().length() > 0)) {
-                Log.v("ASD", "create mediaplayer fragment");
                 MediaPlayerFragment mediaPlayerFragment = new MediaPlayerFragment();
                 mediaPlayerFragment.setVideoURL(mStepsItem.getVideoURL());
                 mediaPlayerFragment.setmThumbnailURL(mStepsItem.getThumbnailURL());

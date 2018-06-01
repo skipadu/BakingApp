@@ -3,6 +3,7 @@ package com.pihrit.bakingapp;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,18 +42,23 @@ public class MediaPlayerFragment extends Fragment implements Player.EventListene
     private String mThumbnailURL;
 
     private static String TAG = MediaPlayerFragment.class.getSimpleName();
-
+    private static final String EXTRA_VIDEO_URL = "video-url";
+    private static final String EXTRA_THUMBNAIL_URL = "thumbnail-url";
 
     public MediaPlayerFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_media_player, container, false);
         ButterKnife.bind(this, v);
+
+        if (savedInstanceState != null) {
+            mVideoURL = savedInstanceState.getString(EXTRA_VIDEO_URL);
+            mThumbnailURL = savedInstanceState.getString(EXTRA_THUMBNAIL_URL);
+        }
 
         initializePlayer();
 
@@ -154,5 +160,12 @@ public class MediaPlayerFragment extends Fragment implements Player.EventListene
 
     public void setmThumbnailURL(String thumbnailURL) {
         this.mThumbnailURL = thumbnailURL;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(EXTRA_VIDEO_URL, mVideoURL);
+        outState.putString(EXTRA_THUMBNAIL_URL, mThumbnailURL);
     }
 }

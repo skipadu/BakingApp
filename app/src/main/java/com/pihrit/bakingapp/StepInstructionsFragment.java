@@ -1,6 +1,7 @@
 package com.pihrit.bakingapp;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +20,7 @@ import butterknife.ButterKnife;
 
 public class StepInstructionsFragment extends Fragment {
 
+    private static final String EXTRA_INSTRUCTIONS = "instructions";
     @BindView(R.id.rv_ingredients)
     public RecyclerView mIngredientsRecyclerView;
     @BindView(R.id.tv_frag_instructions_step)
@@ -37,6 +39,11 @@ public class StepInstructionsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_step_instructions, container, false);
         ButterKnife.bind(this, v);
+
+        if (savedInstanceState != null) {
+            mIngredients = savedInstanceState.getParcelableArrayList(IngredientsItem.PARCELABLE_ID);
+            mInstructions = savedInstanceState.getString(EXTRA_INSTRUCTIONS);
+        }
 
         mIngredientsRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager lm = new LinearLayoutManager(getActivity());
@@ -62,5 +69,13 @@ public class StepInstructionsFragment extends Fragment {
 
     public void setIngredients(ArrayList<IngredientsItem> ingredients) {
         this.mIngredients = ingredients;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelableArrayList(IngredientsItem.PARCELABLE_ID, mIngredients);
+        outState.putString(EXTRA_INSTRUCTIONS, mInstructions);
     }
 }
