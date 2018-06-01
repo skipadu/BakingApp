@@ -60,6 +60,8 @@ public class RecipeStepSelectActivity extends AppCompatActivity implements Recip
             mRecipe = savedInstanceState.getParcelable(Recipe.PARCELABLE_ID);
         }
 
+        getSupportActionBar().setTitle(mRecipe.getName());
+
         refreshAdapter();
     }
 
