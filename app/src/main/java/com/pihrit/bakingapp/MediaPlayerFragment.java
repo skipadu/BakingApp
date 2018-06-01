@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -40,10 +41,12 @@ public class MediaPlayerFragment extends Fragment implements Player.EventListene
     public PlayerView mPlayerView;
     private String mVideoURL;
     private String mThumbnailURL;
+    private long mPlayPosition = C.TIME_UNSET;
 
     private static String TAG = MediaPlayerFragment.class.getSimpleName();
     private static final String EXTRA_VIDEO_URL = "video-url";
     private static final String EXTRA_THUMBNAIL_URL = "thumbnail-url";
+    private static final String EXTRA_PLAY_POSITION = "play-position";
 
     public MediaPlayerFragment() {
         // Required empty public constructor
@@ -58,6 +61,7 @@ public class MediaPlayerFragment extends Fragment implements Player.EventListene
         if (savedInstanceState != null) {
             mVideoURL = savedInstanceState.getString(EXTRA_VIDEO_URL);
             mThumbnailURL = savedInstanceState.getString(EXTRA_THUMBNAIL_URL);
+            mPlayPosition = savedInstanceState.getLong(EXTRA_PLAY_POSITION, C.TIME_UNSET);
         }
 
         initializePlayer();
@@ -86,6 +90,7 @@ public class MediaPlayerFragment extends Fragment implements Player.EventListene
             String userAgent = Util.getUserAgent(getActivity(), "BakingApp");
             MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(getActivity(), userAgent), new DefaultExtractorsFactory(), null, null);
             mExoPlayer.prepare(mediaSource);
+            mExoPlayer.seekTo(mPlayPosition);
             mExoPlayer.setPlayWhenReady(true);
         }
     }
@@ -102,6 +107,14 @@ public class MediaPlayerFragment extends Fragment implements Player.EventListene
     public void onDestroy() {
         super.onDestroy();
         releasePlayer();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mExoPlayer != null) {
+            mPlayPosition = mExoPlayer.getCurrentPosition();
+        }
     }
 
     @Override
@@ -167,5 +180,6 @@ public class MediaPlayerFragment extends Fragment implements Player.EventListene
         super.onSaveInstanceState(outState);
         outState.putString(EXTRA_VIDEO_URL, mVideoURL);
         outState.putString(EXTRA_THUMBNAIL_URL, mThumbnailURL);
+        outState.putLong(EXTRA_PLAY_POSITION, mPlayPosition);
     }
 }
