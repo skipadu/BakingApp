@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -67,6 +66,12 @@ public class RecipeStepViewActivity extends AppCompatActivity {
             fragmentManager.beginTransaction()
                     .add(R.id.navigation_buttons_container, navigationFragment)
                     .commit();
+        }
+
+        if (mStepsItem != null) {
+            getSupportActionBar().setTitle(mStepsItem.getShortDescription());
+        } else {
+            getSupportActionBar().setTitle(getString(R.string.ingredients));
         }
 
     }
