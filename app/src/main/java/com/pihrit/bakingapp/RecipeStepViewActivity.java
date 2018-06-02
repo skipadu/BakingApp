@@ -17,6 +17,8 @@ import java.util.ArrayList;
 public class RecipeStepViewActivity extends AppCompatActivity implements OnNavigationInteractionListener {
 
     public static final String ARGUMENT_VIDEO_URL = "video-url";
+    public static final String ARGUMENT_INGREDIENTS = "ingredients";
+    public static final String ARGUMENT_INSTRUCTIONS = "instructions";
 
     private StepsItem mStepsItem;
     private ArrayList<IngredientsItem> mIngredients;

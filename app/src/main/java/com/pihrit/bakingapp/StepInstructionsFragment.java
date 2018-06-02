@@ -21,9 +21,9 @@ import butterknife.ButterKnife;
 public class StepInstructionsFragment extends Fragment {
 
     private static final String EXTRA_INSTRUCTIONS = "instructions";
-    @BindView(R.id.rv_ingredients)
+    @BindView(R.id.old_rv_ingredients)
     public RecyclerView mIngredientsRecyclerView;
-    @BindView(R.id.tv_frag_instructions_step)
+    @BindView(R.id.old_tv_frag_instructions_step)
     public TextView mInstructionsTextView;
 
     private String mInstructions;
