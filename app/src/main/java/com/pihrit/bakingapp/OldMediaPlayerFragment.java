@@ -20,7 +20,6 @@ import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.RenderersFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
@@ -34,28 +33,28 @@ import com.google.android.exoplayer2.util.Util;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MediaPlayerFragment extends Fragment implements Player.EventListener {
+public class OldMediaPlayerFragment extends Fragment implements Player.EventListener {
 
     private SimpleExoPlayer mExoPlayer;
-    @BindView(R.id.playerView)
+    @BindView(R.id.old_playerView)
     public PlayerView mPlayerView;
     private String mVideoURL;
     private String mThumbnailURL;
     private long mPlayPosition = C.TIME_UNSET;
 
-    private static String TAG = MediaPlayerFragment.class.getSimpleName();
+    private static String TAG = OldMediaPlayerFragment.class.getSimpleName();
     private static final String EXTRA_VIDEO_URL = "video-url";
     private static final String EXTRA_THUMBNAIL_URL = "thumbnail-url";
     private static final String EXTRA_PLAY_POSITION = "play-position";
 
-    public MediaPlayerFragment() {
+    public OldMediaPlayerFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_media_player, container, false);
+        View v = inflater.inflate(R.layout.old_fragment_media_player, container, false);
         ButterKnife.bind(this, v);
 
         if (savedInstanceState != null) {
@@ -135,7 +134,6 @@ public class MediaPlayerFragment extends Fragment implements Player.EventListene
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-
     }
 
     @Override

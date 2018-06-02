@@ -15,6 +15,9 @@ import com.pihrit.bakingapp.model.StepsItem;
 import java.util.ArrayList;
 
 public class RecipeStepViewActivity extends AppCompatActivity implements OnNavigationInteractionListener {
+
+    public static final String ARGUMENT_VIDEO_URL = "video-url";
+
     private StepsItem mStepsItem;
     private ArrayList<IngredientsItem> mIngredients;
     private Recipe mRecipe;
