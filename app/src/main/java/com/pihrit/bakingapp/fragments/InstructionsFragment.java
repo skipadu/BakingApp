@@ -6,14 +6,20 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.pihrit.bakingapp.R;
 import com.pihrit.bakingapp.RecipeStepViewActivity;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class InstructionsFragment extends Fragment {
     private static final String BUNDLE_INSTRUCTIONS = "instructions";
+
+    @BindView(R.id.tv_frag_instructions_step)
+    TextView instructionsTextView;
+
     private String mInstructions;
 
     public InstructionsFragment() {
@@ -45,6 +51,9 @@ public class InstructionsFragment extends Fragment {
         if (savedInstanceState != null) {
             mInstructions = savedInstanceState.getString(BUNDLE_INSTRUCTIONS);
         }
+
+        instructionsTextView.setText(mInstructions);
+
         return v;
     }
 

@@ -22,10 +22,24 @@
         android:layout_marginEnd="@dimen/default_margin"
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginTop="@dimen/default_margin"
-        app:layout_constraintBottom_toTopOf="@+id/navigation_buttons_container"
+        app:layout_constraintBottom_toTopOf="@+id/step_ingredients_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/media_player_container"></FrameLayout>
+
+
+    <FrameLayout
+        android:id="@+id/step_ingredients_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin"
+        app:layout_constraintBottom_toTopOf="@+id/navigation_buttons_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/step_instructions_container"></FrameLayout>
+
 
     <FrameLayout
         android:id="@+id/navigation_buttons_container"

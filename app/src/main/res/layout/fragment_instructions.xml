@@ -5,10 +5,18 @@
     android:layout_height="match_parent"
     tools:context=".fragments.InstructionsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_frag_instructions_step"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:textAlignment="textStart"
+            android:textSize="@dimen/text_big"
+            tools:text="Recipe step description" />
+    </ScrollView>
 
 </FrameLayout>

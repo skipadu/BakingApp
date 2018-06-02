@@ -6,6 +6,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.pihrit.bakingapp.fragments.IngredientsFragment;
+import com.pihrit.bakingapp.fragments.InstructionsFragment;
+import com.pihrit.bakingapp.fragments.MediaPlayerFragment;
 import com.pihrit.bakingapp.fragments.NavigationFragment;
 import com.pihrit.bakingapp.fragments.OnNavigationInteractionListener;
 import com.pihrit.bakingapp.model.IngredientsItem;
@@ -20,9 +23,10 @@ public class RecipeStepViewActivity extends AppCompatActivity implements OnNavig
     public static final String ARGUMENT_INGREDIENTS = "ingredients";
     public static final String ARGUMENT_INSTRUCTIONS = "instructions";
 
+    private Recipe mRecipe;
+
     private StepsItem mStepsItem;
     private ArrayList<IngredientsItem> mIngredients;
-    private Recipe mRecipe;
     private int mSelectedRecipeStepIndex;
 
     private static final String TAG = RecipeStepViewActivity.class.getSimpleName();
@@ -48,72 +52,43 @@ public class RecipeStepViewActivity extends AppCompatActivity implements OnNavig
         }
         Log.d(TAG, "onCreate(), index is now: " + mSelectedRecipeStepIndex);
 
+
+        // TODO: handle replacing of fragments when navigating with the buttons; now just test to show something... if it even works anymore
+
         FragmentManager fm = getSupportFragmentManager();
+
+        String videoUrl = getVideoUrl();
+        if (videoUrl != null && videoUrl.length() > 0) {
+            fm.beginTransaction()
+                    .add(R.id.media_player_container, MediaPlayerFragment.newInstance(videoUrl))
+                    .commit();
+        }
+
+        if (mStepsItem != null) {
+            fm.beginTransaction()
+                    .add(R.id.step_instructions_container, InstructionsFragment.newInstance(mStepsItem.getDescription()))
+                    .commit();
+        } else if (mIngredients != null && mIngredients.size() > 0) {
+            fm.beginTransaction()
+                    .add(R.id.step_ingredients_container, IngredientsFragment.newInstance(mIngredients))
+                    .commit();
+        }
+
         fm.beginTransaction()
                 .add(R.id.navigation_buttons_container, NavigationFragment.newInstance())
                 .commit();
-
-
-        // Create new fragments only if no previously saved state
-//        if (savedInstanceState == null) {
-//            // TODO: Different layout for the tablet
-//
-//            FragmentManager fragmentManager = getSupportFragmentManager();
-//
-//            if (isMediaAvailableToShow()) {
-//                MediaPlayerFragment mediaPlayerFragment = new MediaPlayerFragment();
-//                mediaPlayerFragment.setVideoURL(mStepsItem.getVideoURL());
-//                mediaPlayerFragment.setmThumbnailURL(mStepsItem.getThumbnailURL());
-//
-//                fragmentManager.beginTransaction()
-//                        .add(R.id.media_player_container, mediaPlayerFragment)
-//                        .commit();
-//            } else {
-//                hideMediaPlayer();
-//            }
-//
-//
-//            StepInstructionsFragment instructionsFragment = new StepInstructionsFragment();
-//            if (mStepsItem != null) {
-//                instructionsFragment.setInstructions(mStepsItem.getDescription());
-//            } else if (mIngredients != null) {
-//                instructionsFragment.setIngredients(mIngredients);
-//            }
-//
-//            fragmentManager.beginTransaction()
-//                    .add(R.id.step_instructions_container, instructionsFragment)
-//                    .commit();
-//
-//            //TODO: nav Fragment
-//        }
-//
-//        if (mStepsItem != null) {
-//            getSupportActionBar().setTitle(mStepsItem.getShortDescription());
-//        } else {
-//            getSupportActionBar().setTitle(getString(R.string.ingredients));
-//        }
-//
-//        if (!isMediaAvailableToShow()) {
-//            hideMediaPlayer();
-//        }
-//    }
-
-//    private boolean isMediaAvailableToShow() {
-//        return mStepsItem != null && (mStepsItem.getVideoURL().length() > 0 || mStepsItem.getThumbnailURL().length() > 0);
-//    }
-//
-//    private void hideMediaPlayer() {
-//        View v = findViewById(R.id.media_player_container);
-//        v.setVisibility(View.GONE);
-//    }
     }
-//
-//    // FIXME: Little hack to keep the data still in place when going back to previous activity
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        finish();
-//        return true;
-//    }
+
+    private String getVideoUrl() {
+        String videoUrl = null;
+        if (mStepsItem != null) {
+            videoUrl = mStepsItem.getVideoURL();
+            if (videoUrl == null) {
+                videoUrl = mStepsItem.getThumbnailURL();
+            }
+        }
+        return videoUrl;
+    }
 
     @Override
     public void previousButtonPressed() {
@@ -131,5 +106,15 @@ public class RecipeStepViewActivity extends AppCompatActivity implements OnNavig
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(SELECTED_STEP_INDEX, mSelectedRecipeStepIndex);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Intent recipeStepSelectIntent = new Intent(RecipeStepViewActivity.this, RecipeStepSelectActivity.class);
+        recipeStepSelectIntent.putExtra(Recipe.PARCELABLE_ID, mRecipe);
+        startActivity(recipeStepSelectIntent);
+        finish();
     }
 }
