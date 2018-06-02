@@ -88,7 +88,8 @@ public class MediaPlayerFragment extends Fragment implements Player.EventListene
             mExoPlayer.addListener(this);
 
             String userAgent = Util.getUserAgent(getActivity(), getString(R.string.app_name));
-            MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(getActivity(), userAgent), new DefaultExtractorsFactory(), null, null);
+            MediaSource mediaSource = new ExtractorMediaSource.Factory(new DefaultDataSourceFactory(getActivity(), userAgent)).createMediaSource(mediaUri);
+
             mExoPlayer.prepare(mediaSource);
             mExoPlayer.seekTo(mPlayPosition);
             mExoPlayer.setPlayWhenReady(true);
