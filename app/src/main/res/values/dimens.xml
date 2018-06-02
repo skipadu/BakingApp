@@ -7,4 +7,6 @@
     <dimen name="recipe_height">200dp</dimen>
     <dimen name="text_big">18sp</dimen>
     <dimen name="recipe_step_ingredients_margin">16dp</dimen>
+    <dimen name="nav_button_width">120dp</dimen>
+    <dimen name="nav_button_height">80dp</dimen>
 </resources>
