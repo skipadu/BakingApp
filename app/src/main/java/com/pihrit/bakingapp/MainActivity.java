@@ -3,6 +3,7 @@ package com.pihrit.bakingapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -23,13 +24,15 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements RecipeItemClickListener {
+    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String BASE_URL = "http://go.udacity.com";
+    private static final String BAKING_JSON_URL = "/android-baking-app-json";
+    private static final int GRID_SPAN_COUNT = 2;
 
     @BindView(R.id.rv_recipes)
     RecyclerView mRecipesRecyclerView;
     private RecipeAdapter mRecipeAdapter;
     private Toast mToast;
-
-    private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +43,14 @@ public class MainActivity extends AppCompatActivity implements RecipeItemClickLi
         // Improving performance, as content is not going to change size of the layout
         mRecipesRecyclerView.setHasFixedSize(true);
 
-        RecyclerView.LayoutManager lm = new LinearLayoutManager(this);
-        mRecipesRecyclerView.setLayoutManager(lm);
+        if (isTabletLayout()) {
+            RecyclerView.LayoutManager lm = new GridLayoutManager(this, GRID_SPAN_COUNT);
+            mRecipesRecyclerView.setLayoutManager(lm);
+        } else {
+
+            RecyclerView.LayoutManager lm = new LinearLayoutManager(this);
+            mRecipesRecyclerView.setLayoutManager(lm);
+        }
 
         mRecipeAdapter = new RecipeAdapter(this, this);
         mRecipesRecyclerView.setAdapter(mRecipeAdapter);
@@ -51,21 +60,22 @@ public class MainActivity extends AppCompatActivity implements RecipeItemClickLi
         loadRecipesFromAPI();
     }
 
+    private boolean isTabletLayout() {
+        return findViewById(R.id.root_main_tablet) != null;
+    }
+
     private void loadRecipesFromAPI() {
-        // url to .json
-        // http://go.udacity.com/android-baking-app-json
         Retrofit rf = new Retrofit.Builder()
-                .baseUrl("http://go.udacity.com")
+                .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         BakingApi request = rf.create(BakingApi.class);
 
-        Call<ArrayList<Recipe>> call = request.getRecipes("/android-baking-app-json");
+        Call<ArrayList<Recipe>> call = request.getRecipes(BAKING_JSON_URL);
         call.enqueue(new Callback<ArrayList<Recipe>>() {
             @Override
             public void onResponse(Call<ArrayList<Recipe>> call, Response<ArrayList<Recipe>> response) {
                 if (response.isSuccessful()) {
-                    // OK
                     ArrayList<Recipe> recipes = response.body();
 
                     mRecipeAdapter.setRecipes(recipes);
