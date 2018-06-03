@@ -26,7 +26,7 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.pihrit.bakingapp.R;
-import com.pihrit.bakingapp.RecipeStepViewActivity;
+import com.pihrit.bakingapp.activities.DetailsViewActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,7 +55,7 @@ public class MediaPlayerFragment extends Fragment implements Player.EventListene
     public static MediaPlayerFragment newInstance(String videoUrl) {
         MediaPlayerFragment fragment = new MediaPlayerFragment();
         Bundle args = new Bundle();
-        args.putString(RecipeStepViewActivity.ARGUMENT_VIDEO_URL, videoUrl);
+        args.putString(DetailsViewActivity.ARGUMENT_VIDEO_URL, videoUrl);
         fragment.setArguments(args);
         return fragment;
     }
@@ -64,7 +64,7 @@ public class MediaPlayerFragment extends Fragment implements Player.EventListene
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mVideoUrl = getArguments().getString(RecipeStepViewActivity.ARGUMENT_VIDEO_URL);
+            mVideoUrl = getArguments().getString(DetailsViewActivity.ARGUMENT_VIDEO_URL);
         }
     }
 

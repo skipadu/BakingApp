@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import com.pihrit.bakingapp.activities.DetailsViewActivity;
 import com.pihrit.bakingapp.model.Recipe;
 import com.pihrit.bakingapp.recyclerviews.RecipeStepAdapter;
 import com.pihrit.bakingapp.recyclerviews.RecipeStepItemClickListener;
@@ -74,7 +75,7 @@ public class RecipeStepSelectActivity extends AppCompatActivity implements Recip
 
     @Override
     public void onRecipeStepItemClick(int itemIndex) {
-        Intent recipeStepViewIntent = new Intent(RecipeStepSelectActivity.this, RecipeStepViewActivity.class);
+        Intent recipeStepViewIntent = new Intent(RecipeStepSelectActivity.this, DetailsViewActivity.class);
         recipeStepViewIntent.putExtra(Recipe.PARCELABLE_ID, mRecipe);
         recipeStepViewIntent.putExtra(EXTRA_RECIPE_STEP_INDEX, itemIndex);
 
@@ -83,7 +84,7 @@ public class RecipeStepSelectActivity extends AppCompatActivity implements Recip
 
     @OnClick(R.id.old_tv_recipe_step_ingredients)
     public void onIngredientsStepClick() {
-        Intent recipeStepViewIntent = new Intent(RecipeStepSelectActivity.this, RecipeStepViewActivity.class);
+        Intent recipeStepViewIntent = new Intent(RecipeStepSelectActivity.this, DetailsViewActivity.class);
         recipeStepViewIntent.putExtra(Recipe.PARCELABLE_ID, mRecipe);
         recipeStepViewIntent.putExtra(EXTRA_RECIPE_STEP_INDEX, INGREDIENTS_INDEX);
 

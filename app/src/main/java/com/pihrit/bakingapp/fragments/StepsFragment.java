@@ -68,7 +68,16 @@ public class StepsFragment extends Fragment implements RecipeStepItemClickListen
         mStepAdapter = new RecipeStepAdapter(getActivity(), this);
         mStepsRecyclerView.setAdapter(mStepAdapter);
 
+        refreshAdapter();
+
         return v;
+    }
+
+    private void refreshAdapter() {
+        if (mRecipe != null) {
+            mStepAdapter.setRecipeSteps(mRecipe.getSteps());
+            mStepAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override

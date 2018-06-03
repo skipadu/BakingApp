@@ -1,4 +1,4 @@
-package com.pihrit.bakingapp;
+package com.pihrit.bakingapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.pihrit.bakingapp.R;
+import com.pihrit.bakingapp.RecipeStepSelectActivity;
 import com.pihrit.bakingapp.fragments.IngredientsFragment;
 import com.pihrit.bakingapp.fragments.InstructionsFragment;
 import com.pihrit.bakingapp.fragments.MediaPlayerFragment;
@@ -17,7 +19,7 @@ import com.pihrit.bakingapp.model.StepsItem;
 
 import java.util.ArrayList;
 
-public class RecipeStepViewActivity extends AppCompatActivity implements OnNavigationInteractionListener {
+public class DetailsViewActivity extends AppCompatActivity implements OnNavigationInteractionListener {
 
     public static final String ARGUMENT_VIDEO_URL = "video-url";
     public static final String ARGUMENT_INGREDIENTS = "ingredients";
@@ -29,7 +31,7 @@ public class RecipeStepViewActivity extends AppCompatActivity implements OnNavig
     private ArrayList<IngredientsItem> mIngredients;
     private int mSelectedRecipeStepIndex;
 
-    private static final String TAG = RecipeStepViewActivity.class.getSimpleName();
+    private static final String TAG = DetailsViewActivity.class.getSimpleName();
     private static final String SELECTED_STEP_INDEX = "current-step-index";
 
     @Override
@@ -41,7 +43,7 @@ public class RecipeStepViewActivity extends AppCompatActivity implements OnNavig
 
         if (callerIntent.hasExtra(Recipe.PARCELABLE_ID)) {
             mRecipe = callerIntent.getExtras().getParcelable(Recipe.PARCELABLE_ID);
-            mSelectedRecipeStepIndex = callerIntent.getExtras().getInt(RecipeStepSelectActivity.EXTRA_RECIPE_STEP_INDEX);
+            mSelectedRecipeStepIndex = callerIntent.getExtras().getInt(DetailsActivity.EXTRA_STEP_INDEX);
             if (mSelectedRecipeStepIndex >= 0) {
                 mStepsItem = mRecipe.getSteps().get(mSelectedRecipeStepIndex);
             }
@@ -55,28 +57,30 @@ public class RecipeStepViewActivity extends AppCompatActivity implements OnNavig
 
         // TODO: handle replacing of fragments when navigating with the buttons; now just test to show something... if it even works anymore
 
-        FragmentManager fm = getSupportFragmentManager();
+        if (savedInstanceState == null) {
+            FragmentManager fm = getSupportFragmentManager();
 
-        String videoUrl = getVideoUrl();
-        if (videoUrl != null && videoUrl.length() > 0) {
+            String videoUrl = getVideoUrl();
+            if (videoUrl != null && videoUrl.length() > 0) {
+                fm.beginTransaction()
+                        .add(R.id.media_player_container, MediaPlayerFragment.newInstance(videoUrl))
+                        .commit();
+            }
+
+            if (mStepsItem != null) {
+                fm.beginTransaction()
+                        .add(R.id.step_instructions_container, InstructionsFragment.newInstance(mStepsItem.getDescription()))
+                        .commit();
+            } else if (mIngredients != null && mIngredients.size() > 0) {
+                fm.beginTransaction()
+                        .add(R.id.step_ingredients_container, IngredientsFragment.newInstance(mIngredients))
+                        .commit();
+            }
+
             fm.beginTransaction()
-                    .add(R.id.media_player_container, MediaPlayerFragment.newInstance(videoUrl))
+                    .add(R.id.navigation_buttons_container, NavigationFragment.newInstance())
                     .commit();
         }
-
-        if (mStepsItem != null) {
-            fm.beginTransaction()
-                    .add(R.id.step_instructions_container, InstructionsFragment.newInstance(mStepsItem.getDescription()))
-                    .commit();
-        } else if (mIngredients != null && mIngredients.size() > 0) {
-            fm.beginTransaction()
-                    .add(R.id.step_ingredients_container, IngredientsFragment.newInstance(mIngredients))
-                    .commit();
-        }
-
-        fm.beginTransaction()
-                .add(R.id.navigation_buttons_container, NavigationFragment.newInstance())
-                .commit();
     }
 
     private String getVideoUrl() {
@@ -112,7 +116,7 @@ public class RecipeStepViewActivity extends AppCompatActivity implements OnNavig
     public void onBackPressed() {
         super.onBackPressed();
 
-        Intent recipeStepSelectIntent = new Intent(RecipeStepViewActivity.this, RecipeStepSelectActivity.class);
+        Intent recipeStepSelectIntent = new Intent(DetailsViewActivity.this, RecipeStepSelectActivity.class);
         recipeStepSelectIntent.putExtra(Recipe.PARCELABLE_ID, mRecipe);
         startActivity(recipeStepSelectIntent);
         finish();

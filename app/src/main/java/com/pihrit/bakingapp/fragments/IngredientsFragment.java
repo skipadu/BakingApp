@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.pihrit.bakingapp.R;
-import com.pihrit.bakingapp.RecipeStepViewActivity;
+import com.pihrit.bakingapp.activities.DetailsViewActivity;
 import com.pihrit.bakingapp.model.IngredientsItem;
 import com.pihrit.bakingapp.recyclerviews.IngredientsAdapter;
 
@@ -36,7 +36,7 @@ public class IngredientsFragment extends Fragment {
     public static IngredientsFragment newInstance(ArrayList<IngredientsItem> ingredients) {
         IngredientsFragment fragment = new IngredientsFragment();
         Bundle args = new Bundle();
-        args.putParcelableArrayList(RecipeStepViewActivity.ARGUMENT_INGREDIENTS, ingredients);
+        args.putParcelableArrayList(DetailsViewActivity.ARGUMENT_INGREDIENTS, ingredients);
 
         fragment.setArguments(args);
         return fragment;
@@ -46,7 +46,7 @@ public class IngredientsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mIngredients = getArguments().getParcelableArrayList(RecipeStepViewActivity.ARGUMENT_INGREDIENTS);
+            mIngredients = getArguments().getParcelableArrayList(DetailsViewActivity.ARGUMENT_INGREDIENTS);
         }
     }
 

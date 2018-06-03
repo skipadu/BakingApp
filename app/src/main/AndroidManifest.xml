@@ -26,13 +26,18 @@
                 android:value=".activities.MainActivity" />
         </activity>
         <activity
-            android:name=".RecipeStepViewActivity"
+            android:name=".activities.DetailsViewActivity"
             android:parentActivityName=".RecipeStepSelectActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".RecipeStepSelectActivity" />
         </activity>
-        <activity android:name=".activities.DetailsActivity"></activity>
+        <activity android:name=".activities.DetailsActivity">
+            android:parentActivityName=".activities.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.pihrit.bakingapp.R;
-import com.pihrit.bakingapp.RecipeStepViewActivity;
+import com.pihrit.bakingapp.activities.DetailsViewActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,7 +29,7 @@ public class InstructionsFragment extends Fragment {
     public static InstructionsFragment newInstance(String instructions) {
         InstructionsFragment fragment = new InstructionsFragment();
         Bundle args = new Bundle();
-        args.putString(RecipeStepViewActivity.ARGUMENT_INSTRUCTIONS, instructions);
+        args.putString(DetailsViewActivity.ARGUMENT_INSTRUCTIONS, instructions);
         fragment.setArguments(args);
         return fragment;
     }
@@ -38,7 +38,7 @@ public class InstructionsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mInstructions = getArguments().getString(RecipeStepViewActivity.ARGUMENT_INSTRUCTIONS);
+            mInstructions = getArguments().getString(DetailsViewActivity.ARGUMENT_INSTRUCTIONS);
         }
     }
 
