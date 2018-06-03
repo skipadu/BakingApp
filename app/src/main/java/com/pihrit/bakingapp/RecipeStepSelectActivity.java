@@ -21,7 +21,7 @@ public class RecipeStepSelectActivity extends AppCompatActivity implements Recip
     public static final String EXTRA_RECIPE_STEP_INDEX = "recipe-position";
     private static final String TAG = RecipeStepSelectActivity.class.getSimpleName();
 
-    @BindView(R.id.rv_recipe_steps)
+    @BindView(R.id.old_rv_recipe_steps)
     RecyclerView mRecipeStepsRecyclerView;
     private RecipeStepAdapter mRecipeStepAdapter;
 
@@ -81,7 +81,7 @@ public class RecipeStepSelectActivity extends AppCompatActivity implements Recip
         startActivity(recipeStepViewIntent);
     }
 
-    @OnClick(R.id.tv_recipe_step_ingredients)
+    @OnClick(R.id.old_tv_recipe_step_ingredients)
     public void onIngredientsStepClick() {
         Intent recipeStepViewIntent = new Intent(RecipeStepSelectActivity.this, RecipeStepViewActivity.class);
         recipeStepViewIntent.putExtra(Recipe.PARCELABLE_ID, mRecipe);

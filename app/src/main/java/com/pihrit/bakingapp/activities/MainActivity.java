@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import com.pihrit.bakingapp.BakingApi;
 import com.pihrit.bakingapp.R;
-import com.pihrit.bakingapp.RecipeStepSelectActivity;
 import com.pihrit.bakingapp.model.Recipe;
 import com.pihrit.bakingapp.recyclerviews.RecipeAdapter;
 import com.pihrit.bakingapp.recyclerviews.RecipeItemClickListener;
@@ -103,8 +102,8 @@ public class MainActivity extends AppCompatActivity implements RecipeItemClickLi
     public void onRecipeItemClick(int itemIndex) {
         Recipe clickedRecipe = mRecipeAdapter.getRecipeAt(itemIndex);
 
-        Intent recipeStepSelectIntent = new Intent(MainActivity.this, RecipeStepSelectActivity.class);
-        recipeStepSelectIntent.putExtra(Recipe.PARCELABLE_ID, clickedRecipe);
-        startActivity(recipeStepSelectIntent);
+        Intent detailsIntent = new Intent(MainActivity.this, DetailsActivity.class);
+        detailsIntent.putExtra(Recipe.PARCELABLE_ID, clickedRecipe);
+        startActivity(detailsIntent);
     }
 }
