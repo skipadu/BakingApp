@@ -5,10 +5,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.pihrit.bakingapp.R;
-import com.pihrit.bakingapp.RecipeStepSelectActivity;
 import com.pihrit.bakingapp.fragments.IngredientsFragment;
 import com.pihrit.bakingapp.fragments.InstructionsFragment;
 import com.pihrit.bakingapp.fragments.MediaPlayerFragment;
@@ -37,7 +38,7 @@ public class DetailsViewActivity extends AppCompatActivity implements OnNavigati
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recipe_step_view);
+        setContentView(R.layout.activity_details_view);
 
         Intent callerIntent = getIntent();
 
@@ -236,12 +237,15 @@ public class DetailsViewActivity extends AppCompatActivity implements OnNavigati
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-        Intent recipeStepSelectIntent = new Intent(DetailsViewActivity.this, RecipeStepSelectActivity.class);
-        recipeStepSelectIntent.putExtra(Recipe.PARCELABLE_ID, mRecipe);
-        startActivity(recipeStepSelectIntent);
-        finish();
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d("ASD", "DetailViewActivity.onOptionsItemSelected()");
+        if (item.getItemId() == android.R.id.home) {
+            Intent detailsIntent = new Intent(DetailsViewActivity.this, DetailsActivity.class);
+            detailsIntent.putExtra(Recipe.PARCELABLE_ID, mRecipe);
+            detailsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(detailsIntent);
+            finish();
+        }
+        return true;
     }
 }
