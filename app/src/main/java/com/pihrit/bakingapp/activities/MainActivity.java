@@ -1,4 +1,4 @@
-package com.pihrit.bakingapp;
+package com.pihrit.bakingapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,9 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.pihrit.bakingapp.BakingApi;
+import com.pihrit.bakingapp.R;
+import com.pihrit.bakingapp.RecipeStepSelectActivity;
 import com.pihrit.bakingapp.model.Recipe;
 import com.pihrit.bakingapp.recyclerviews.RecipeAdapter;
 import com.pihrit.bakingapp.recyclerviews.RecipeItemClickListener;
