@@ -22,6 +22,7 @@ import butterknife.ButterKnife;
 
 
 public class IngredientsFragment extends Fragment {
+    public static final String TAG = IngredientsFragment.class.getSimpleName();
     private static final String BUNDLE_INGREDIENTS = "ingredients";
 
     @BindView(R.id.rv_ingredients)

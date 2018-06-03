@@ -33,6 +33,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MediaPlayerFragment extends Fragment implements Player.EventListener {
+    public static final String TAG = MediaPlayerFragment.class.getSimpleName();
     private static final String BUNDLE_VIDEO_URL = "video-url";
     private static final String BUNDLE_PLAY_POSITION = "play-position";
 
@@ -74,6 +75,7 @@ public class MediaPlayerFragment extends Fragment implements Player.EventListene
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_media_player, container, false);
         ButterKnife.bind(this, v);
+
         return v;
     }
 

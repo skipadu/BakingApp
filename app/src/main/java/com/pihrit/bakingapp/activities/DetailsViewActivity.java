@@ -2,9 +2,9 @@ package com.pihrit.bakingapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.pihrit.bakingapp.R;
@@ -26,16 +26,13 @@ public class DetailsViewActivity extends AppCompatActivity implements OnNavigati
     public static final String ARGUMENT_INGREDIENTS = "ingredients";
     public static final String ARGUMENT_INSTRUCTIONS = "instructions";
 
-    private static final String TAG = DetailsViewActivity.class.getSimpleName();
     private static final String SELECTED_STEP_INDEX = "current-step-index";
 
     private Recipe mRecipe;
-
     private StepsItem mStepsItem;
     private ArrayList<IngredientsItem> mIngredients;
     private int mSelectedRecipeStepIndex;
     private Toast mToast;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,10 +50,6 @@ public class DetailsViewActivity extends AppCompatActivity implements OnNavigati
         if (savedInstanceState != null) {
             mSelectedRecipeStepIndex = savedInstanceState.getInt(SELECTED_STEP_INDEX);
         }
-        Log.d(TAG, "onCreate(), index is now: " + mSelectedRecipeStepIndex);
-
-
-        // TODO: handle replacing of fragments when navigating with the buttons; now just test to show something... if it even works anymore
 
         if (savedInstanceState == null) {
             FragmentManager fm = getSupportFragmentManager();
@@ -64,17 +57,17 @@ public class DetailsViewActivity extends AppCompatActivity implements OnNavigati
             String videoUrl = getVideoUrl();
             if (videoUrl != null && videoUrl.length() > 0) {
                 fm.beginTransaction()
-                        .add(R.id.media_player_container, MediaPlayerFragment.newInstance(videoUrl))
+                        .add(R.id.media_player_container, MediaPlayerFragment.newInstance(videoUrl), MediaPlayerFragment.TAG)
                         .commit();
             }
 
             if (mStepsItem != null) {
                 fm.beginTransaction()
-                        .add(R.id.step_instructions_container, InstructionsFragment.newInstance(mStepsItem.getDescription()))
+                        .add(R.id.step_instructions_container, InstructionsFragment.newInstance(mStepsItem.getDescription()), InstructionsFragment.TAG)
                         .commit();
             } else if (mIngredients != null && mIngredients.size() > 0) {
                 fm.beginTransaction()
-                        .add(R.id.step_ingredients_container, IngredientsFragment.newInstance(mIngredients))
+                        .add(R.id.step_ingredients_container, IngredientsFragment.newInstance(mIngredients), IngredientsFragment.TAG)
                         .commit();
             }
 
@@ -106,15 +99,11 @@ public class DetailsViewActivity extends AppCompatActivity implements OnNavigati
     }
 
     private int getMaximumStepIndex() {
-        int maxIndex = mRecipe != null ? mRecipe.getSteps().size() - 1 : 0;
-        Log.d(TAG, "Maximum step index: " + maxIndex);
-        return maxIndex;
+        return mRecipe != null ? mRecipe.getSteps().size() - 1 : 0;
     }
 
     @Override
     public void previousButtonPressed() {
-
-        // TODO: check that index is not too small to not get outOfIndex
         boolean goingBackToRecipeSelection = false;
         mSelectedRecipeStepIndex--;
 
@@ -123,15 +112,46 @@ public class DetailsViewActivity extends AppCompatActivity implements OnNavigati
         } else if (mSelectedRecipeStepIndex < DetailsActivity.INGREDIENTS_INDEX) {
             goingBackToRecipeSelection = true;
         }
-        Log.d(TAG, "previousButtonPressed, index is now: " + mSelectedRecipeStepIndex + " - Back to recipe selection? : " + goingBackToRecipeSelection);
 
         if (goingBackToRecipeSelection) {
             goBackToRecipeSelection();
         } else {
-            if (mSelectedRecipeStepIndex < 0) {
-                Log.d(TAG, "Ingredients step");
+            if (mSelectedRecipeStepIndex >= 0) {
+                loadStep();
             } else {
-                Log.d(TAG, "Normal step, index: " + mSelectedRecipeStepIndex);
+                loadIngredientsStep();
+            }
+        }
+    }
+
+    private void loadIngredientsStep() {
+        if (mIngredients != null && mIngredients.size() > 0) {
+            FragmentManager fm = getSupportFragmentManager();
+
+            Fragment ingredientsFrag = fm.findFragmentByTag(IngredientsFragment.TAG);
+            if (ingredientsFrag != null) {
+                fm.beginTransaction()
+                        .replace(R.id.step_ingredients_container, IngredientsFragment.newInstance(mIngredients), IngredientsFragment.TAG)
+                        .commit();
+            } else {
+                fm.beginTransaction()
+                        .add(R.id.step_ingredients_container, IngredientsFragment.newInstance(mIngredients), IngredientsFragment.TAG)
+                        .commit();
+            }
+
+
+            Fragment mediaPlayerFrag = fm.findFragmentByTag(MediaPlayerFragment.TAG);
+            if (mediaPlayerFrag != null) {
+                fm.beginTransaction()
+                        .remove(mediaPlayerFrag)
+                        .commit();
+            }
+
+            Fragment instructionsFrag = fm.findFragmentByTag(InstructionsFragment.TAG);
+            if (instructionsFrag != null) {
+                fm.beginTransaction()
+                        .remove(instructionsFrag)
+                        .commit();
             }
         }
     }
@@ -142,18 +162,63 @@ public class DetailsViewActivity extends AppCompatActivity implements OnNavigati
         mSelectedRecipeStepIndex++;
         if (mSelectedRecipeStepIndex > getMaximumStepIndex()) {
             goingBackToRecipeSelection = true;
+        } else if (mSelectedRecipeStepIndex > DetailsActivity.INGREDIENTS_INDEX && mSelectedRecipeStepIndex < 0) {
+            mSelectedRecipeStepIndex = 0;
         }
-
-        Log.d(TAG, "nextButtonPressed, index is now: " + mSelectedRecipeStepIndex + " - Back to recipe selection?: " + goingBackToRecipeSelection);
 
         if (goingBackToRecipeSelection) {
             if (mToast != null) {
                 mToast.cancel();
             }
-            mToast = Toast.makeText(this, "Recipe finished!", Toast.LENGTH_LONG);
+            mToast = Toast.makeText(this, R.string.recipe_finished, Toast.LENGTH_LONG);
             mToast.show();
 
             goBackToRecipeSelection();
+        } else {
+            loadStep();
+        }
+    }
+
+    private void loadStep() {
+        if (mSelectedRecipeStepIndex >= 0 && mSelectedRecipeStepIndex <= getMaximumStepIndex()) {
+            mStepsItem = mRecipe.getSteps().get(mSelectedRecipeStepIndex);
+            String videoUrl = getVideoUrl();
+
+            FragmentManager fm = getSupportFragmentManager();
+
+            Fragment ingredientsFrag = fm.findFragmentByTag(IngredientsFragment.TAG);
+            if (ingredientsFrag != null) {
+                fm.beginTransaction()
+                        .remove(ingredientsFrag)
+                        .commit();
+            }
+
+            Fragment mediaPlayerFrag = fm.findFragmentByTag(MediaPlayerFragment.TAG);
+            if (videoUrl != null && videoUrl.length() > 0) {
+                if (mediaPlayerFrag != null) {
+                    fm.beginTransaction()
+                            .replace(R.id.media_player_container, MediaPlayerFragment.newInstance(videoUrl), MediaPlayerFragment.TAG)
+                            .commit();
+                } else {
+                    fm.beginTransaction()
+                            .add(R.id.media_player_container, MediaPlayerFragment.newInstance(videoUrl), MediaPlayerFragment.TAG)
+                            .commit();
+                }
+            } else if (mediaPlayerFrag != null) {
+                fm.beginTransaction()
+                        .remove(mediaPlayerFrag)
+                        .commit();
+            }
+            Fragment instructionsFrag = fm.findFragmentByTag(InstructionsFragment.TAG);
+            if (instructionsFrag != null) {
+                fm.beginTransaction()
+                        .replace(R.id.step_instructions_container, InstructionsFragment.newInstance(mStepsItem.getDescription()), InstructionsFragment.TAG)
+                        .commit();
+            } else {
+                fm.beginTransaction()
+                        .add(R.id.step_instructions_container, InstructionsFragment.newInstance(mStepsItem.getDescription()), InstructionsFragment.TAG)
+                        .commit();
+            }
         }
     }
 

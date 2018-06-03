@@ -13,7 +13,7 @@
         <TextView
             android:id="@+id/tv_step_ingredients"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/recipe_height"
+            android:layout_height="@dimen/recipe_step_height"
             android:layout_marginBottom="@dimen/default_margin"
             android:layout_marginEnd="@dimen/recipe_step_ingredients_margin"
             android:layout_marginStart="@dimen/recipe_step_ingredients_margin"

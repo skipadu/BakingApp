@@ -16,6 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class InstructionsFragment extends Fragment {
+    public static final String TAG = InstructionsFragment.class.getSimpleName();
     private static final String BUNDLE_INSTRUCTIONS = "instructions";
 
     @BindView(R.id.tv_frag_instructions_step)
