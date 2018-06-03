@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.pihrit.bakingapp.R;
 import com.pihrit.bakingapp.RecipeStepSelectActivity;
@@ -25,14 +26,16 @@ public class DetailsViewActivity extends AppCompatActivity implements OnNavigati
     public static final String ARGUMENT_INGREDIENTS = "ingredients";
     public static final String ARGUMENT_INSTRUCTIONS = "instructions";
 
+    private static final String TAG = DetailsViewActivity.class.getSimpleName();
+    private static final String SELECTED_STEP_INDEX = "current-step-index";
+
     private Recipe mRecipe;
 
     private StepsItem mStepsItem;
     private ArrayList<IngredientsItem> mIngredients;
     private int mSelectedRecipeStepIndex;
+    private Toast mToast;
 
-    private static final String TAG = DetailsViewActivity.class.getSimpleName();
-    private static final String SELECTED_STEP_INDEX = "current-step-index";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +47,9 @@ public class DetailsViewActivity extends AppCompatActivity implements OnNavigati
         if (callerIntent.hasExtra(Recipe.PARCELABLE_ID)) {
             mRecipe = callerIntent.getExtras().getParcelable(Recipe.PARCELABLE_ID);
             mSelectedRecipeStepIndex = callerIntent.getExtras().getInt(DetailsActivity.EXTRA_STEP_INDEX);
-            if (mSelectedRecipeStepIndex >= 0) {
-                mStepsItem = mRecipe.getSteps().get(mSelectedRecipeStepIndex);
-            }
-            mIngredients = mRecipe.getIngredients();
+            setInformation();
         }
+
         if (savedInstanceState != null) {
             mSelectedRecipeStepIndex = savedInstanceState.getInt(SELECTED_STEP_INDEX);
         }
@@ -83,6 +84,16 @@ public class DetailsViewActivity extends AppCompatActivity implements OnNavigati
         }
     }
 
+    private void setInformation() {
+        if (mRecipe != null) {
+
+            if (mSelectedRecipeStepIndex >= 0) {
+                mStepsItem = mRecipe.getSteps().get(mSelectedRecipeStepIndex);
+            }
+            mIngredients = mRecipe.getIngredients();
+        }
+    }
+
     private String getVideoUrl() {
         String videoUrl = null;
         if (mStepsItem != null) {
@@ -94,16 +105,63 @@ public class DetailsViewActivity extends AppCompatActivity implements OnNavigati
         return videoUrl;
     }
 
+    private int getMaximumStepIndex() {
+        int maxIndex = mRecipe != null ? mRecipe.getSteps().size() - 1 : 0;
+        Log.d(TAG, "Maximum step index: " + maxIndex);
+        return maxIndex;
+    }
+
     @Override
     public void previousButtonPressed() {
+
+        // TODO: check that index is not too small to not get outOfIndex
+        boolean goingBackToRecipeSelection = false;
         mSelectedRecipeStepIndex--;
-        Log.d(TAG, "previousButtonPressed, index is now: " + mSelectedRecipeStepIndex);
+
+        if (mSelectedRecipeStepIndex > DetailsActivity.INGREDIENTS_INDEX && mSelectedRecipeStepIndex < 0) {
+            mSelectedRecipeStepIndex = DetailsActivity.INGREDIENTS_INDEX;
+        } else if (mSelectedRecipeStepIndex < DetailsActivity.INGREDIENTS_INDEX) {
+            goingBackToRecipeSelection = true;
+        }
+        Log.d(TAG, "previousButtonPressed, index is now: " + mSelectedRecipeStepIndex + " - Back to recipe selection? : " + goingBackToRecipeSelection);
+
+        if (goingBackToRecipeSelection) {
+            goBackToRecipeSelection();
+        } else {
+            if (mSelectedRecipeStepIndex < 0) {
+                Log.d(TAG, "Ingredients step");
+            } else {
+                Log.d(TAG, "Normal step, index: " + mSelectedRecipeStepIndex);
+            }
+        }
     }
 
     @Override
     public void nextButtonPressed() {
+        boolean goingBackToRecipeSelection = false;
         mSelectedRecipeStepIndex++;
-        Log.d(TAG, "nextButtonPressed, index is now: " + mSelectedRecipeStepIndex);
+        if (mSelectedRecipeStepIndex > getMaximumStepIndex()) {
+            goingBackToRecipeSelection = true;
+        }
+
+        Log.d(TAG, "nextButtonPressed, index is now: " + mSelectedRecipeStepIndex + " - Back to recipe selection?: " + goingBackToRecipeSelection);
+
+        if (goingBackToRecipeSelection) {
+            if (mToast != null) {
+                mToast.cancel();
+            }
+            mToast = Toast.makeText(this, "Recipe finished!", Toast.LENGTH_LONG);
+            mToast.show();
+
+            goBackToRecipeSelection();
+        }
+    }
+
+    private void goBackToRecipeSelection() {
+        // Trying also to clear navigation stack
+        Intent mainIntent = new Intent(DetailsViewActivity.this, MainActivity.class);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(mainIntent);
     }
 
     @Override
