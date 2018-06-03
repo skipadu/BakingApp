@@ -3,6 +3,7 @@ package com.pihrit.bakingapp.fragments;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,6 +74,12 @@ public class MediaPlayerFragment extends Fragment implements Player.EventListene
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_media_player, container, false);
         ButterKnife.bind(this, v);
+        return v;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         if (savedInstanceState != null) {
             mVideoUrl = savedInstanceState.getString(BUNDLE_VIDEO_URL);
@@ -80,8 +87,6 @@ public class MediaPlayerFragment extends Fragment implements Player.EventListene
         }
 
         initializePlayer();
-
-        return v;
     }
 
     private void initializePlayer() {

@@ -3,6 +3,7 @@ package com.pihrit.bakingapp.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -55,6 +56,12 @@ public class StepsFragment extends Fragment implements RecipeStepItemClickListen
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_steps, container, false);
         ButterKnife.bind(this, v);
+        return v;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         if (savedInstanceState != null) {
             mRecipe = savedInstanceState.getParcelable(Recipe.PARCELABLE_ID);
@@ -69,8 +76,6 @@ public class StepsFragment extends Fragment implements RecipeStepItemClickListen
         mStepsRecyclerView.setAdapter(mStepAdapter);
 
         refreshAdapter();
-
-        return v;
     }
 
     private void refreshAdapter() {

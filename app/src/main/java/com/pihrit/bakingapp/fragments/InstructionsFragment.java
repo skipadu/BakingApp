@@ -2,6 +2,7 @@ package com.pihrit.bakingapp.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,16 +48,18 @@ public class InstructionsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_instructions, container, false);
         ButterKnife.bind(this, v);
+        return v;
+    }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
             mInstructions = savedInstanceState.getString(BUNDLE_INSTRUCTIONS);
         }
 
         instructionsTextView.setText(mInstructions);
-
-        return v;
     }
-
 
     @Override
     public void onDetach() {
