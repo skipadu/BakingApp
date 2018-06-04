@@ -2,6 +2,10 @@ package com.pihrit.bakingapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.idling.CountingIdlingResource;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -36,6 +40,18 @@ public class MainActivity extends AppCompatActivity implements RecipeItemClickLi
     private RecipeAdapter mRecipeAdapter;
     private Toast mToast;
 
+    @Nullable
+    private CountingIdlingResource mCountingIdlingResource;
+
+    @VisibleForTesting
+    @NonNull
+    public CountingIdlingResource getCountingIdlingResource() {
+        if (mCountingIdlingResource == null) {
+            mCountingIdlingResource = new CountingIdlingResource(TAG);
+        }
+        return mCountingIdlingResource;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +83,8 @@ public class MainActivity extends AppCompatActivity implements RecipeItemClickLi
     }
 
     private void loadRecipesFromAPI() {
+        getCountingIdlingResource().increment();
+
         Retrofit rf = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -88,11 +106,13 @@ public class MainActivity extends AppCompatActivity implements RecipeItemClickLi
                     mToast.show();
                     Log.e(TAG, "Response was not successful. Response errorBody: " + response.errorBody().toString());
                 }
+                getCountingIdlingResource().decrement();
             }
 
             @Override
             public void onFailure(Call<ArrayList<Recipe>> call, Throwable t) {
                 Log.e(TAG, t.getMessage());
+                getCountingIdlingResource().decrement();
             }
         });
 
