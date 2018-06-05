@@ -5,7 +5,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 
 import com.pihrit.bakingapp.R;
@@ -15,14 +15,10 @@ import com.pihrit.bakingapp.activities.MainActivity;
 public class IngredientsWidgetProvider extends AppWidgetProvider {
 
     public static final String EXTRA_COMING_FORM_WIDGET = "coming-from-widget";
-    public static final String TAG = IngredientsWidgetProvider.class.getSimpleName();
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
         RemoteViews views = getIngredientsGridRemoteView(context);
-
-        Log.d(TAG, "updateAppWidget()");
-
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 
@@ -35,13 +31,19 @@ public class IngredientsWidgetProvider extends AppWidgetProvider {
         Intent clickIntent = new Intent(context, MainActivity.class);
         clickIntent.putExtra(EXTRA_COMING_FORM_WIDGET, true);
         PendingIntent clickPendingIntent = PendingIntent.getActivity(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        views.setOnClickPendingIntent(R.id.widget_placeholder, clickPendingIntent);
 
         SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(context);
         String recipeName = (String) sharedPreferencesUtil.getObject(MainActivity.PREF_RECIPE_NAME, String.class);
         if (recipeName != null) {
+            // Hide placeholder
+            views.setViewVisibility(R.id.widget_placeholder, View.GONE);
+
             views.setTextViewText(R.id.widget_tv_recipe_name, recipeName);
+            views.setOnClickPendingIntent(R.id.widget_tv_recipe_name, clickPendingIntent);
+        } else {
+            views.setOnClickPendingIntent(R.id.widget_placeholder, clickPendingIntent);
         }
+
         return views;
     }
 
