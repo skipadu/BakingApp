@@ -1,5 +1,7 @@
 package com.pihrit.bakingapp.activities;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,9 +17,11 @@ import android.widget.Toast;
 
 import com.pihrit.bakingapp.BakingApi;
 import com.pihrit.bakingapp.R;
+import com.pihrit.bakingapp.SharedPreferencesUtil;
 import com.pihrit.bakingapp.model.Recipe;
 import com.pihrit.bakingapp.recyclerviews.RecipeAdapter;
 import com.pihrit.bakingapp.recyclerviews.RecipeItemClickListener;
+import com.pihrit.bakingapp.widget.IngredientsWidgetProvider;
 
 import java.util.ArrayList;
 
@@ -30,6 +34,9 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements RecipeItemClickListener {
+    public static final String PREF_INGREDIENTS = "ingredients-pref";
+    public static final String PREF_RECIPE_NAME = "recipe-name-pref";
+
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String BASE_URL = "http://go.udacity.com";
     private static final String BAKING_JSON_URL = "/android-baking-app-json";
@@ -42,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements RecipeItemClickLi
 
     @Nullable
     private CountingIdlingResource mCountingIdlingResource;
+    private boolean isComingFromTheWidget;
 
     @VisibleForTesting
     @NonNull
@@ -57,6 +65,13 @@ public class MainActivity extends AppCompatActivity implements RecipeItemClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        Intent callerIntent = getIntent();
+        if (callerIntent.hasExtra(IngredientsWidgetProvider.EXTRA_COMING_FORM_WIDGET)) {
+            Log.d(TAG, "Coming from the widget!");
+            isComingFromTheWidget = true;
+            // TODO: show some UI-text, instruction, to user that she/he should select recipe
+        }
 
         // Improving performance, as content is not going to change size of the layout
         mRecipesRecyclerView.setHasFixedSize(true);
@@ -122,8 +137,26 @@ public class MainActivity extends AppCompatActivity implements RecipeItemClickLi
     public void onRecipeItemClick(int itemIndex) {
         Recipe clickedRecipe = mRecipeAdapter.getRecipeAt(itemIndex);
 
-        Intent detailsIntent = new Intent(MainActivity.this, DetailsActivity.class);
-        detailsIntent.putExtra(Recipe.PARCELABLE_ID, clickedRecipe);
-        startActivity(detailsIntent);
+        if (isComingFromTheWidget) {
+            // TODO: store ingredients and name of this recipe to somewhere so it can be shown in widget
+            SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(this);
+            sharedPreferencesUtil.storeObjects(PREF_INGREDIENTS, clickedRecipe.getIngredients());
+            sharedPreferencesUtil.storeObject(PREF_RECIPE_NAME, clickedRecipe.getName());
+
+
+            Intent intent = new Intent(this, IngredientsWidgetProvider.class);
+            intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+            int[] ids = AppWidgetManager.getInstance(this).getAppWidgetIds(new ComponentName(this, IngredientsWidgetProvider.class));
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+            sendBroadcast(intent);
+
+            mToast = Toast.makeText(this, "Recipe stored for widget!", Toast.LENGTH_LONG);
+            mToast.show();
+//            finish();
+        } else {
+            Intent detailsIntent = new Intent(MainActivity.this, DetailsActivity.class);
+            detailsIntent.putExtra(Recipe.PARCELABLE_ID, clickedRecipe);
+            startActivity(detailsIntent);
+        }
     }
 }
