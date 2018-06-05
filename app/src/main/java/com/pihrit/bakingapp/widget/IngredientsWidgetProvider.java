@@ -11,9 +11,6 @@ import android.widget.RemoteViews;
 import com.pihrit.bakingapp.R;
 import com.pihrit.bakingapp.SharedPreferencesUtil;
 import com.pihrit.bakingapp.activities.MainActivity;
-import com.pihrit.bakingapp.model.IngredientsItem;
-
-import java.util.ArrayList;
 
 public class IngredientsWidgetProvider extends AppWidgetProvider {
 
@@ -24,7 +21,7 @@ public class IngredientsWidgetProvider extends AppWidgetProvider {
                                 int appWidgetId) {
         RemoteViews views = getIngredientsGridRemoteView(context);
 
-        Log.d(TAG, "udpdateAppWidget(). Next we need to try load the data from sharedpreferences.");
+        Log.d(TAG, "updateAppWidget()");
 
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
@@ -32,28 +29,19 @@ public class IngredientsWidgetProvider extends AppWidgetProvider {
     private static RemoteViews getIngredientsGridRemoteView(Context context) {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_grid_view);
 
+        Intent serviceIntent = new Intent(context, GridWidgetService.class);
+        views.setRemoteAdapter(R.id.widget_ingredients_grid_view, serviceIntent);
+
         Intent clickIntent = new Intent(context, MainActivity.class);
         clickIntent.putExtra(EXTRA_COMING_FORM_WIDGET, true);
         PendingIntent clickPendingIntent = PendingIntent.getActivity(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.widget_placeholder, clickPendingIntent);
 
-        // TODO: set servive as remoteAdapter
-
-
-        // test to get values from sharedprefs
         SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(context);
-        ArrayList<IngredientsItem> ingredients = sharedPreferencesUtil.loadObjects(MainActivity.PREF_INGREDIENTS, IngredientsItem.class);
-        if (ingredients != null) {
-
-            for (IngredientsItem ingredient : ingredients) {
-                Log.v(TAG, "" + ingredient.getQuantity() + " " + ingredient.getMeasure() + " " + ingredient.getIngredient());
-            }
-        }
         String recipeName = (String) sharedPreferencesUtil.getObject(MainActivity.PREF_RECIPE_NAME, String.class);
         if (recipeName != null) {
-            Log.v(TAG, recipeName);
+            views.setTextViewText(R.id.widget_tv_recipe_name, recipeName);
         }
-
         return views;
     }
 
@@ -78,6 +66,12 @@ public class IngredientsWidgetProvider extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
+    }
+
+    public static void updateAllWidgets(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        for (int appWidgetId : appWidgetIds) {
+            updateAppWidget(context, appWidgetManager, appWidgetId);
+        }
     }
 }
 

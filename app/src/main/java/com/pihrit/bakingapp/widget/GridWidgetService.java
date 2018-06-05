@@ -6,6 +6,6 @@ import android.widget.RemoteViewsService;
 public class GridWidgetService extends RemoteViewsService {
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        return null;
+        return new GridRemoteViewsFactory(this.getApplicationContext());
     }
 }

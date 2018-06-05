@@ -1,7 +1,5 @@
 package com.pihrit.bakingapp.activities;
 
-import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,6 +20,7 @@ import com.pihrit.bakingapp.model.Recipe;
 import com.pihrit.bakingapp.recyclerviews.RecipeAdapter;
 import com.pihrit.bakingapp.recyclerviews.RecipeItemClickListener;
 import com.pihrit.bakingapp.widget.IngredientsWidgetProvider;
+import com.pihrit.bakingapp.widget.RecipeService;
 
 import java.util.ArrayList;
 
@@ -143,12 +142,14 @@ public class MainActivity extends AppCompatActivity implements RecipeItemClickLi
             sharedPreferencesUtil.storeObjects(PREF_INGREDIENTS, clickedRecipe.getIngredients());
             sharedPreferencesUtil.storeObject(PREF_RECIPE_NAME, clickedRecipe.getName());
 
+//            Intent intent = new Intent(this, IngredientsWidgetProvider.class);
+//            intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+//
+//            int[] ids = AppWidgetManager.getInstance(this).getAppWidgetIds(new ComponentName(this, IngredientsWidgetProvider.class));
+//            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+//            sendBroadcast(intent);
 
-            Intent intent = new Intent(this, IngredientsWidgetProvider.class);
-            intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-            int[] ids = AppWidgetManager.getInstance(this).getAppWidgetIds(new ComponentName(this, IngredientsWidgetProvider.class));
-            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
-            sendBroadcast(intent);
+            RecipeService.startActionUpdateRecipe(this);
 
             mToast = Toast.makeText(this, "Recipe stored for widget!", Toast.LENGTH_LONG);
             mToast.show();
@@ -159,4 +160,5 @@ public class MainActivity extends AppCompatActivity implements RecipeItemClickLi
             startActivity(detailsIntent);
         }
     }
+
 }

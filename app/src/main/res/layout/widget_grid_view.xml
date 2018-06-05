@@ -3,12 +3,18 @@
     android:layout_height="match_parent"
     android:padding="@dimen/widget_margin">
 
+    <TextView
+        android:id="@+id/widget_tv_recipe_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center" />
+
     <GridView
         android:id="@+id/widget_ingredients_grid_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:numColumns="2" />
+        android:numColumns="1" />
 
     <RelativeLayout
         android:id="@+id/widget_placeholder"

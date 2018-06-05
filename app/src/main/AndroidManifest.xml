@@ -41,6 +41,12 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/ingredients_widget_provider_info" />
         </receiver>
+
+        <service android:name=".widget.RecipeService" />
+        <service
+            android:name=".widget.GridWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
     </application>
 
 </manifest>
