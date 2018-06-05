@@ -4,4 +4,6 @@
     <string name="recipe_finished">Recipe finished!</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="widget_choose_recipe">Choose recipe for widget!</string>
+    <string name="widget_recipe_stored">Recipe stored for widget!</string>
 </resources>

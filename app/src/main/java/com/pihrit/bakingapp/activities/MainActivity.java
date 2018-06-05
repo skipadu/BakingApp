@@ -67,9 +67,9 @@ public class MainActivity extends AppCompatActivity implements RecipeItemClickLi
 
         Intent callerIntent = getIntent();
         if (callerIntent.hasExtra(IngredientsWidgetProvider.EXTRA_COMING_FORM_WIDGET)) {
-            Log.d(TAG, "Coming from the widget!");
             isComingFromTheWidget = true;
-            // TODO: show some UI-text, instruction, to user that she/he should select recipe
+            mToast = Toast.makeText(this, R.string.widget_choose_recipe, Toast.LENGTH_LONG);
+            mToast.show();
         }
 
         // Improving performance, as content is not going to change size of the layout
@@ -137,23 +137,14 @@ public class MainActivity extends AppCompatActivity implements RecipeItemClickLi
         Recipe clickedRecipe = mRecipeAdapter.getRecipeAt(itemIndex);
 
         if (isComingFromTheWidget) {
-            // TODO: store ingredients and name of this recipe to somewhere so it can be shown in widget
             SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(this);
             sharedPreferencesUtil.storeObjects(PREF_INGREDIENTS, clickedRecipe.getIngredients());
             sharedPreferencesUtil.storeObject(PREF_RECIPE_NAME, clickedRecipe.getName());
 
-//            Intent intent = new Intent(this, IngredientsWidgetProvider.class);
-//            intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-//
-//            int[] ids = AppWidgetManager.getInstance(this).getAppWidgetIds(new ComponentName(this, IngredientsWidgetProvider.class));
-//            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
-//            sendBroadcast(intent);
-
             RecipeService.startActionUpdateRecipe(this);
 
-            mToast = Toast.makeText(this, "Recipe stored for widget!", Toast.LENGTH_LONG);
+            mToast = Toast.makeText(this, R.string.widget_recipe_stored, Toast.LENGTH_LONG);
             mToast.show();
-//            finish();
         } else {
             Intent detailsIntent = new Intent(MainActivity.this, DetailsActivity.class);
             detailsIntent.putExtra(Recipe.PARCELABLE_ID, clickedRecipe);
