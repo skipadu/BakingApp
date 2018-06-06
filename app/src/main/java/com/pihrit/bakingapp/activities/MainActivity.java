@@ -66,10 +66,12 @@ public class MainActivity extends AppCompatActivity implements RecipeItemClickLi
         ButterKnife.bind(this);
 
         Intent callerIntent = getIntent();
-        if (callerIntent.hasExtra(IngredientsWidgetProvider.EXTRA_COMING_FORM_WIDGET)) {
+        if (callerIntent.hasExtra(IngredientsWidgetProvider.EXTRA_COMING_FROM_WIDGET)) {
             isComingFromTheWidget = true;
             mToast = Toast.makeText(this, R.string.widget_choose_recipe, Toast.LENGTH_LONG);
             mToast.show();
+        } else {
+            isComingFromTheWidget = false;
         }
 
         // Improving performance, as content is not going to change size of the layout
@@ -86,8 +88,6 @@ public class MainActivity extends AppCompatActivity implements RecipeItemClickLi
 
         mRecipeAdapter = new RecipeAdapter(this, this);
         mRecipesRecyclerView.setAdapter(mRecipeAdapter);
-
-        // TODO: parcelable to save recipes to state
 
         loadRecipesFromAPI();
     }
@@ -137,19 +137,23 @@ public class MainActivity extends AppCompatActivity implements RecipeItemClickLi
         Recipe clickedRecipe = mRecipeAdapter.getRecipeAt(itemIndex);
 
         if (isComingFromTheWidget) {
+            isComingFromTheWidget = false;
             SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(this);
             sharedPreferencesUtil.storeObjects(PREF_INGREDIENTS, clickedRecipe.getIngredients());
             sharedPreferencesUtil.storeObject(PREF_RECIPE_NAME, clickedRecipe.getName());
 
             RecipeService.startActionUpdateRecipe(this);
 
+            mToast.cancel();
             mToast = Toast.makeText(this, R.string.widget_recipe_stored, Toast.LENGTH_LONG);
             mToast.show();
+
+            // Minimizes the app, so that user can see that the widget now has selected recipe name and ingredients
+            MainActivity.this.moveTaskToBack(true);
         } else {
             Intent detailsIntent = new Intent(MainActivity.this, DetailsActivity.class);
             detailsIntent.putExtra(Recipe.PARCELABLE_ID, clickedRecipe);
             startActivity(detailsIntent);
         }
     }
-
 }
