@@ -26,30 +26,10 @@ This project is for Android Developer Nanodegree program I'm participating. It i
 
 ## Screenshots
 ## Phone
-<img src="
-https://github.com/skipadu/BakingApp/raw/master/screenshots/recipe_selection.png?raw=true
-" width="200" alt="Recipe selection"> <img src="
-https://github.com/skipadu/BakingApp/raw/master/screenshots/all_steps.png?raw=true
-"width="200" alt="All steps"> <img src="
-https://github.com/skipadu/BakingApp/raw/master/screenshots/ingredients.png?raw=true
-"width="200" alt="Ingredients"> <img src="
-https://github.com/skipadu/BakingApp/raw/master/screenshots/recipe_step.png?raw=true
-"width="200" alt="Step">
+<img src="https://github.com/skipadu/BakingApp/raw/master/screenshots/recipe_selection.png?raw=true" width="200" alt="Recipe selection"> <img src="https://github.com/skipadu/BakingApp/raw/master/screenshots/all_steps.png?raw=true" width="200" alt="All steps"> <img src="https://github.com/skipadu/BakingApp/raw/master/screenshots/ingredients.png?raw=true" width="200" alt="Ingredients"> <img src="https://github.com/skipadu/BakingApp/raw/master/screenshots/recipe_step.png?raw=true" width="200" alt="Step">
 
 ## Tablet
-<img src="
-https://github.com/skipadu/BakingApp/raw/master/screenshots/tablet_recipe_selection.png?raw=true
-" width="400" alt="Recipe selection"> <img src="
-https://github.com/skipadu/BakingApp/raw/master/screenshots/tablet_recipe_step.png?raw=true
-"width="400" alt="Step">
+<img src="https://github.com/skipadu/BakingApp/raw/master/screenshots/tablet_recipe_selection.png?raw=true" width="400" alt="Recipe selection"> <img src="https://github.com/skipadu/BakingApp/raw/master/screenshots/tablet_recipe_step.png?raw=true" width="400" alt="Step">
 
 ### Widget
-<img src="
-https://github.com/skipadu/BakingApp/raw/master/screenshots/widget_no_recipe_selected.png?raw=true
-" width="200" alt="No recipe selected"> <img src="
-https://github.com/skipadu/BakingApp/raw/master/screenshots/widget_choose_recipe_for_widget.png?raw=true
-"width="200" alt="Choose recipe for widget"> <img src="
-https://github.com/skipadu/BakingApp/raw/master/screenshots/widget_recipe_stored.png?raw=true
-"width="200" alt="Recipe stored"> <img src="
-https://github.com/skipadu/BakingApp/raw/master/screenshots/widget_recipe_selected.png?raw=true
-"width="200" alt="Recipe selected"> 
+<img src="https://github.com/skipadu/BakingApp/raw/master/screenshots/widget_no_recipe_selected.png?raw=true" width="200" alt="No recipe selected"> <img src="https://github.com/skipadu/BakingApp/raw/master/screenshots/widget_choose_recipe_for_widget.png?raw=true" width="200" alt="Choose recipe for widget"> <img src="https://github.com/skipadu/BakingApp/raw/master/screenshots/widget_recipe_stored.png?raw=true" width="200" alt="Recipe stored"> <img src="https://github.com/skipadu/BakingApp/raw/master/screenshots/widget_recipe_selected.png?raw=true" width="200" alt="Recipe selected"> 
