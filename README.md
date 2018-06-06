@@ -15,7 +15,7 @@ This project is for Android Developer Nanodegree program I'm participating. It i
 
 ## Links
 * [TinyDB](https://github.com/kcochibili/TinyDB--Android-Shared-Preferences-Turbo) - Got the idea of storing the ingredients to SharedPreferences for the widget
-* [CountingIdlingResource]((https://medium.com/@wingoku/synchronizing-espresso-with-custom-threads-using-idling-resource-retrofit-70439ad2f07) - Looked this tutorial to learn how to make Retrofit working with espresso's UI test
+* [CountingIdlingResource](https://medium.com/@wingoku/synchronizing-espresso-with-custom-threads-using-idling-resource-retrofit-70439ad2f07) - Looked this tutorial to learn how to make Retrofit working with espresso's UI test
 * [RoboPOJOGenerator](https://github.com/robohorse/RoboPOJOGenerator) - Used this tool to generate the start of POJOS
 
 ## Using the widget
