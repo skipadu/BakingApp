@@ -14,7 +14,7 @@ import com.pihrit.bakingapp.activities.MainActivity;
 
 public class IngredientsWidgetProvider extends AppWidgetProvider {
 
-    public static final String EXTRA_COMING_FORM_WIDGET = "coming-from-widget";
+    public static final String EXTRA_COMING_FROM_WIDGET = "coming-from-widget";
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
@@ -29,7 +29,7 @@ public class IngredientsWidgetProvider extends AppWidgetProvider {
         views.setRemoteAdapter(R.id.widget_ingredients_grid_view, serviceIntent);
 
         Intent clickIntent = new Intent(context, MainActivity.class);
-        clickIntent.putExtra(EXTRA_COMING_FORM_WIDGET, true);
+        clickIntent.putExtra(EXTRA_COMING_FROM_WIDGET, true);
         PendingIntent clickPendingIntent = PendingIntent.getActivity(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(context);
