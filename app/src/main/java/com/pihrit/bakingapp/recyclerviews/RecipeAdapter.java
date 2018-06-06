@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.pihrit.bakingapp.R;
 import com.pihrit.bakingapp.model.Recipe;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -34,8 +35,18 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapterViewHolder>
     public void onBindViewHolder(@NonNull RecipeAdapterViewHolder holder, int position) {
         Recipe recipe = getRecipeAt(position);
 
-        holder.mRecipeNameTextView.setText(recipe.getName());
-        // TODO: Show also other information?
+        if (recipe != null) {
+            holder.mRecipeNameTextView.setText(recipe.getName());
+            holder.mServingsTextView.setText(Integer.toString(recipe.getServings()));
+            String recipeName = recipe.getImage();
+            if (recipeName != null && recipeName.length() > 0) {
+                Picasso.get()
+                        .load(recipeName)
+                        .placeholder(R.drawable.baking_placeholder)
+                        .error(R.drawable.baking_placeholder_error)
+                        .into(holder.mRecipeImage);
+            }
+        }
     }
 
     @Override

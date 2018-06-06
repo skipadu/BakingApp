@@ -6,4 +6,6 @@
     <string name="add_widget">Add widget</string>
     <string name="widget_choose_recipe">Choose recipe for widget!</string>
     <string name="widget_recipe_stored">Recipe stored for widget!</string>
+    <string name="image_of_recipe">Image of recipe</string>
+    <string name="servings">Servings</string>
 </resources>

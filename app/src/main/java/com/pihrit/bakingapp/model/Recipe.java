@@ -6,12 +6,10 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Recipe implements Parcelable {
     public static final String PARCELABLE_ID = "recipe";
 
-    // No real use; Seems to be always empty
     @SerializedName("image")
     private String image;
 
