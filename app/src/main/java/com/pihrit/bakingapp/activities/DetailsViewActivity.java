@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -238,7 +237,6 @@ public class DetailsViewActivity extends AppCompatActivity implements OnNavigati
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d("ASD", "DetailViewActivity.onOptionsItemSelected()");
         if (item.getItemId() == android.R.id.home) {
             Intent detailsIntent = new Intent(DetailsViewActivity.this, DetailsActivity.class);
             detailsIntent.putExtra(Recipe.PARCELABLE_ID, mRecipe);
