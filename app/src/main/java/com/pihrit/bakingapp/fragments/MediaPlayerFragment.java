@@ -36,13 +36,16 @@ public class MediaPlayerFragment extends Fragment implements Player.EventListene
     public static final String TAG = MediaPlayerFragment.class.getSimpleName();
     private static final String BUNDLE_VIDEO_URL = "video-url";
     private static final String BUNDLE_PLAY_POSITION = "play-position";
+    private static final String BUNDLE_AUTO_PLAY = "auto-play";
 
     private SimpleExoPlayer mExoPlayer;
     @BindView(R.id.playerView)
     PlayerView mPlayerView;
 
     private String mVideoUrl;
-    private long mPlayPosition = C.TIME_UNSET;
+    private long mPlayPosition;
+    private boolean mStartAutoPlay;
+    private MediaSource mMediaSource;
 
     public MediaPlayerFragment() {
         // Required empty public constructor
@@ -86,6 +89,9 @@ public class MediaPlayerFragment extends Fragment implements Player.EventListene
         if (savedInstanceState != null) {
             mVideoUrl = savedInstanceState.getString(BUNDLE_VIDEO_URL);
             mPlayPosition = savedInstanceState.getLong(BUNDLE_PLAY_POSITION);
+            mStartAutoPlay = savedInstanceState.getBoolean(BUNDLE_AUTO_PLAY);
+        } else {
+            clearPlayPosition();
         }
 
         initializePlayer();
@@ -103,14 +109,13 @@ public class MediaPlayerFragment extends Fragment implements Player.EventListene
             mExoPlayer.addListener(this);
 
             String userAgent = Util.getUserAgent(getActivity(), getString(R.string.app_name));
-            MediaSource mediaSource =
-                    new ExtractorMediaSource.Factory(
-                            new DefaultDataSourceFactory(getActivity(), userAgent))
-                            .createMediaSource(mediaUri);
+            mMediaSource = new ExtractorMediaSource.Factory(
+                    new DefaultDataSourceFactory(getActivity(), userAgent))
+                    .createMediaSource(mediaUri);
 
-            mExoPlayer.prepare(mediaSource);
+            mExoPlayer.prepare(mMediaSource);
             mExoPlayer.seekTo(mPlayPosition);
-            mExoPlayer.setPlayWhenReady(true);
+            mExoPlayer.setPlayWhenReady(mStartAutoPlay);
         }
     }
 
@@ -127,17 +132,49 @@ public class MediaPlayerFragment extends Fragment implements Player.EventListene
 
     private void releasePlayer() {
         if (mExoPlayer != null) {
-            mExoPlayer.stop();
+            updatePlayPosition();
             mExoPlayer.release();
             mExoPlayer = null;
+            mMediaSource = null;
+        }
+    }
+
+    private void updatePlayPosition() {
+        if (mExoPlayer != null) {
+            mStartAutoPlay = mExoPlayer.getPlayWhenReady();
+            mPlayPosition = Math.max(0, mExoPlayer.getContentPosition());
+        }
+    }
+
+    private void clearPlayPosition() {
+        mStartAutoPlay = true;
+        mPlayPosition = C.TIME_UNSET;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (Util.SDK_INT <= 23) {
+            releasePlayer();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (Util.SDK_INT > 23) {
+            releasePlayer();
         }
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+        updatePlayPosition();
+
         outState.putString(BUNDLE_VIDEO_URL, mVideoUrl);
         outState.putLong(BUNDLE_PLAY_POSITION, mPlayPosition);
+        outState.putBoolean(BUNDLE_AUTO_PLAY, mStartAutoPlay);
     }
 
     @Override
@@ -177,7 +214,9 @@ public class MediaPlayerFragment extends Fragment implements Player.EventListene
 
     @Override
     public void onPositionDiscontinuity(int reason) {
-
+        if (mExoPlayer != null && mExoPlayer.getPlaybackError() != null) {
+            updatePlayPosition();
+        }
     }
 
     @Override
