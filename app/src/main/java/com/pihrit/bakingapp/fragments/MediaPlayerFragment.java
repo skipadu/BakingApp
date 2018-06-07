@@ -78,7 +78,6 @@ public class MediaPlayerFragment extends Fragment implements Player.EventListene
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_media_player, container, false);
         ButterKnife.bind(this, v);
-
         return v;
     }
 

@@ -19,7 +19,6 @@ public class NavigationFragment extends Fragment {
         // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
     public static NavigationFragment newInstance() {
         NavigationFragment fragment = new NavigationFragment();
         return fragment;

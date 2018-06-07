@@ -11,4 +11,5 @@
     <string name="log_error_response_not_successful">Response not successful!</string>
     <string name="log_response_successful">Response was successful!</string>
     <string name="snackbar_action_look">Look!</string>
+    <string name="thumbnail">Thumbnail</string>
 </resources>

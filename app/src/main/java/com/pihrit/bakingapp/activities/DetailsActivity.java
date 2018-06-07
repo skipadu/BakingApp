@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 
 import com.pihrit.bakingapp.R;
 import com.pihrit.bakingapp.fragments.IngredientsFragment;
@@ -12,6 +13,7 @@ import com.pihrit.bakingapp.fragments.InstructionsFragment;
 import com.pihrit.bakingapp.fragments.MediaPlayerFragment;
 import com.pihrit.bakingapp.fragments.OnStepInteractionListener;
 import com.pihrit.bakingapp.fragments.StepsFragment;
+import com.pihrit.bakingapp.fragments.ThumbnailFragment;
 import com.pihrit.bakingapp.model.Recipe;
 import com.pihrit.bakingapp.model.StepsItem;
 
@@ -64,7 +66,7 @@ public class DetailsActivity extends AppCompatActivity implements OnStepInteract
                 } else {
                     mStepsItem = mRecipe.getSteps().get(mCurrentSelectedStepIndex);
                     String videoUrl = getVideoUrl();
-                    if (videoUrl != null && videoUrl.length() > 0) {
+                    if (!TextUtils.isEmpty(videoUrl)) {
                         fm.beginTransaction()
                                 .add(R.id.media_player_fragment_container, MediaPlayerFragment.newInstance(videoUrl), MediaPlayerFragment.TAG)
                                 .commit();
@@ -72,6 +74,14 @@ public class DetailsActivity extends AppCompatActivity implements OnStepInteract
                     fm.beginTransaction()
                             .add(R.id.instructions_fragment_container, InstructionsFragment.newInstance(mStepsItem.getDescription()), InstructionsFragment.TAG)
                             .commit();
+
+                    String thumbnailUrl = getThumbnailUrl();
+                    if (!TextUtils.isEmpty(thumbnailUrl)) {
+                        fm.beginTransaction()
+                                .add(R.id.thumbnail_container, ThumbnailFragment.newInstance(thumbnailUrl), ThumbnailFragment.TAG)
+                                .commit();
+                    }
+
                 }
             }
         }
@@ -90,6 +100,13 @@ public class DetailsActivity extends AppCompatActivity implements OnStepInteract
         return videoUrl;
     }
 
+    private String getThumbnailUrl() {
+        String thumbnailUrl = null;
+        if (mStepsItem != null) {
+            thumbnailUrl = mStepsItem.getThumbnailURL();
+        }
+        return thumbnailUrl;
+    }
 
     private boolean isTabletLayout() {
         return findViewById(R.id.root_details_tablet) != null;
@@ -121,7 +138,7 @@ public class DetailsActivity extends AppCompatActivity implements OnStepInteract
 
             Fragment mediaPlayerFrag = fm.findFragmentByTag(MediaPlayerFragment.TAG);
             if (mediaPlayerFrag != null) {
-                if (videoUrl != null && videoUrl.length() > 0) {
+                if (!TextUtils.isEmpty(videoUrl)) {
                     fm.beginTransaction()
                             .replace(R.id.media_player_fragment_container, MediaPlayerFragment.newInstance(videoUrl), MediaPlayerFragment.TAG)
                             .commit();
@@ -149,6 +166,27 @@ public class DetailsActivity extends AppCompatActivity implements OnStepInteract
                         .add(R.id.instructions_fragment_container, InstructionsFragment.newInstance(mStepsItem.getDescription()), InstructionsFragment.TAG)
                         .commit();
             }
+
+            Fragment thumbnailFragment = fm.findFragmentByTag(ThumbnailFragment.TAG);
+
+            String thumbnailUrl = getThumbnailUrl();
+            if (thumbnailFragment != null) {
+                if (TextUtils.isEmpty(thumbnailUrl)) {
+                    fm.beginTransaction()
+                            .remove(thumbnailFragment)
+                            .commit();
+                } else {
+                    fm.beginTransaction()
+                            .replace(R.id.thumbnail_container, ThumbnailFragment.newInstance(thumbnailUrl), ThumbnailFragment.TAG)
+                            .commit();
+                }
+            } else if (!TextUtils.isEmpty(thumbnailUrl)) {
+                fm.beginTransaction()
+                        .add(R.id.thumbnail_container, ThumbnailFragment.newInstance(thumbnailUrl), ThumbnailFragment.TAG)
+                        .commit();
+            }
+
+
         } else {
             startDetailsViewActivity(index);
         }

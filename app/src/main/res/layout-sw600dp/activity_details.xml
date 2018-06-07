@@ -36,9 +36,7 @@
             app:layout_constraintBottom_toTopOf="@id/gl_horizontal_divider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-        </FrameLayout>
+            app:layout_constraintTop_toTopOf="parent"></FrameLayout>
 
         <android.support.constraint.Guideline
             android:id="@+id/gl_horizontal_divider"
@@ -51,7 +49,7 @@
             android:id="@+id/instructions_fragment_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/thumbnail_container"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/gl_horizontal_divider"></FrameLayout>
@@ -60,12 +58,18 @@
             android:id="@+id/ingredients_fragment_container"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/thumbnail_container"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"></FrameLayout>
 
-        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/thumbnail_container"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/thumbnail_height"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"></FrameLayout>
 
     </android.support.constraint.ConstraintLayout>
 
