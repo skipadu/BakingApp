@@ -13,7 +13,7 @@
         android:layout_height="@dimen/nav_button_height"
         android:layout_marginBottom="@dimen/default_margin"
         android:layout_marginStart="@dimen/default_margin"
-        android:text="Previous"
+        android:text="@string/previous"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,7 +23,7 @@
         android:layout_width="@dimen/nav_button_width"
         android:layout_height="@dimen/nav_button_height"
         android:layout_marginEnd="@dimen/default_margin"
-        android:text="Next"
+        android:text="@string/next"
         app:layout_constraintBottom_toBottomOf="@+id/btn_navigation_previous"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
