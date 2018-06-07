@@ -133,12 +133,11 @@ public class MainActivity extends AppCompatActivity implements RecipeItemClickLi
 
                     mRecipeAdapter.setRecipes(recipes);
                     mRecipeAdapter.notifyDataSetChanged();
-                    Log.v(TAG, "Response was successful!");
+                    Log.d(TAG, getString(R.string.log_response_successful));
                 } else {
-                    mSnackBar = Snackbar.make(getCoordinatorLayout(), "Response not successfull!", Snackbar.LENGTH_LONG);
+                    mSnackBar = Snackbar.make(getCoordinatorLayout(), R.string.log_error_response_not_successful, Snackbar.LENGTH_LONG);
                     mSnackBar.show();
-
-                    Log.e(TAG, "Response was not successful. Response errorBody: " + response.errorBody().toString());
+                    Log.e(TAG, R.string.log_error_response_not_successful + " -> " + response.errorBody().toString());
                 }
                 getCountingIdlingResource().decrement();
             }
@@ -165,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements RecipeItemClickLi
             RecipeService.startActionUpdateRecipe(this);
 
             mSnackBar = Snackbar.make(getCoordinatorLayout(), R.string.widget_recipe_stored, Snackbar.LENGTH_LONG)
-                    .setAction("Look!", new View.OnClickListener() {
+                    .setAction(R.string.snackbar_action_look, new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             // Minimizes the app, so that user can see that the widget now has selected recipe name and ingredients

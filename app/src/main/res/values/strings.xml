@@ -8,4 +8,7 @@
     <string name="widget_recipe_stored">Recipe stored for widget!</string>
     <string name="image_of_recipe">Image of recipe</string>
     <string name="servings">Servings</string>
+    <string name="log_error_response_not_successful">Response not successful!</string>
+    <string name="log_response_successful">Response was successful!</string>
+    <string name="snackbar_action_look">Look!</string>
 </resources>
