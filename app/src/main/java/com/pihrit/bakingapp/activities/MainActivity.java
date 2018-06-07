@@ -5,13 +5,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.test.espresso.idling.CountingIdlingResource;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.Toast;
+import android.view.View;
 
 import com.pihrit.bakingapp.BakingApi;
 import com.pihrit.bakingapp.R;
@@ -44,7 +46,16 @@ public class MainActivity extends AppCompatActivity implements RecipeItemClickLi
     @BindView(R.id.rv_recipes)
     RecyclerView mRecipesRecyclerView;
     private RecipeAdapter mRecipeAdapter;
-    private Toast mToast;
+
+    @Nullable
+    @BindView(R.id.root_main_phone)
+    CoordinatorLayout mPhoneCoordinatorLayout;
+
+    @Nullable
+    @BindView(R.id.root_main_tablet)
+    CoordinatorLayout mTabletCoordinatorLayout;
+
+    private Snackbar mSnackBar;
 
     @Nullable
     private CountingIdlingResource mCountingIdlingResource;
@@ -68,8 +79,8 @@ public class MainActivity extends AppCompatActivity implements RecipeItemClickLi
         Intent callerIntent = getIntent();
         if (callerIntent.hasExtra(IngredientsWidgetProvider.EXTRA_COMING_FROM_WIDGET)) {
             isComingFromTheWidget = true;
-            mToast = Toast.makeText(this, R.string.widget_choose_recipe, Toast.LENGTH_LONG);
-            mToast.show();
+            mSnackBar = Snackbar.make(getCoordinatorLayout(), R.string.widget_choose_recipe, Snackbar.LENGTH_LONG);
+            mSnackBar.show();
         } else {
             isComingFromTheWidget = false;
         }
@@ -96,6 +107,14 @@ public class MainActivity extends AppCompatActivity implements RecipeItemClickLi
         return findViewById(R.id.root_main_tablet) != null;
     }
 
+    private CoordinatorLayout getCoordinatorLayout() {
+        if (isTabletLayout()) {
+            return mTabletCoordinatorLayout;
+        } else {
+            return mPhoneCoordinatorLayout;
+        }
+    }
+
     private void loadRecipesFromAPI() {
         getCountingIdlingResource().increment();
 
@@ -114,10 +133,11 @@ public class MainActivity extends AppCompatActivity implements RecipeItemClickLi
 
                     mRecipeAdapter.setRecipes(recipes);
                     mRecipeAdapter.notifyDataSetChanged();
-                    Log.v(TAG, "Response was successfull!");
+                    Log.v(TAG, "Response was successful!");
                 } else {
-                    mToast = Toast.makeText(getApplicationContext(), "Response not successful!", Toast.LENGTH_LONG);
-                    mToast.show();
+                    mSnackBar = Snackbar.make(getCoordinatorLayout(), "Response not successfull!", Snackbar.LENGTH_LONG);
+                    mSnackBar.show();
+
                     Log.e(TAG, "Response was not successful. Response errorBody: " + response.errorBody().toString());
                 }
                 getCountingIdlingResource().decrement();
@@ -144,12 +164,15 @@ public class MainActivity extends AppCompatActivity implements RecipeItemClickLi
 
             RecipeService.startActionUpdateRecipe(this);
 
-            mToast.cancel();
-            mToast = Toast.makeText(this, R.string.widget_recipe_stored, Toast.LENGTH_LONG);
-            mToast.show();
-
-            // Minimizes the app, so that user can see that the widget now has selected recipe name and ingredients
-            MainActivity.this.moveTaskToBack(true);
+            mSnackBar = Snackbar.make(getCoordinatorLayout(), R.string.widget_recipe_stored, Snackbar.LENGTH_LONG)
+                    .setAction("Look!", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            // Minimizes the app, so that user can see that the widget now has selected recipe name and ingredients
+                            MainActivity.this.moveTaskToBack(true);
+                        }
+                    });
+            mSnackBar.show();
         } else {
             Intent detailsIntent = new Intent(MainActivity.this, DetailsActivity.class);
             detailsIntent.putExtra(Recipe.PARCELABLE_ID, clickedRecipe);
