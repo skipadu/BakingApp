@@ -142,7 +142,7 @@ public class MediaPlayerFragment extends Fragment implements Player.EventListene
     private void updatePlayPosition() {
         if (mExoPlayer != null) {
             mStartAutoPlay = mExoPlayer.getPlayWhenReady();
-            mPlayPosition = Math.max(0, mExoPlayer.getContentPosition());
+            mPlayPosition = Math.max(0, mExoPlayer.getCurrentPosition());
         }
     }
 
