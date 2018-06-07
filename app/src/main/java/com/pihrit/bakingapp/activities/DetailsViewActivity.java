@@ -2,12 +2,13 @@ package com.pihrit.bakingapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.pihrit.bakingapp.R;
 import com.pihrit.bakingapp.fragments.IngredientsFragment;
@@ -22,6 +23,9 @@ import com.pihrit.bakingapp.model.StepsItem;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class DetailsViewActivity extends AppCompatActivity implements OnNavigationInteractionListener {
 
     public static final String ARGUMENT_VIDEO_URL = "video-url";
@@ -30,16 +34,20 @@ public class DetailsViewActivity extends AppCompatActivity implements OnNavigati
 
     private static final String SELECTED_STEP_INDEX = "current-step-index";
 
+    @BindView(R.id.root_details_view)
+    CoordinatorLayout mCoordinatorLayout;
+
     private Recipe mRecipe;
     private StepsItem mStepsItem;
     private ArrayList<IngredientsItem> mIngredients;
     private int mSelectedRecipeStepIndex;
-    private Toast mToast;
+    private Snackbar mSnackBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_view);
+        ButterKnife.bind(this);
 
         Intent callerIntent = getIntent();
 
@@ -200,13 +208,16 @@ public class DetailsViewActivity extends AppCompatActivity implements OnNavigati
         }
 
         if (goingBackToRecipeSelection) {
-            if (mToast != null) {
-                mToast.cancel();
-            }
-            mToast = Toast.makeText(this, R.string.recipe_finished, Toast.LENGTH_LONG);
-            mToast.show();
+            mSnackBar = Snackbar.make(mCoordinatorLayout, R.string.recipe_finished, Snackbar.LENGTH_LONG)
+                    .addCallback(new Snackbar.Callback() {
+                        @Override
+                        public void onDismissed(Snackbar transientBottomBar, int event) {
+                            super.onDismissed(transientBottomBar, event);
+                            goBackToRecipeSelection();
+                        }
+                    });
+            mSnackBar.show();
 
-            goBackToRecipeSelection();
         } else {
             loadStep();
         }
